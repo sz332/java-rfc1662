@@ -1,3 +1,5 @@
+Implementation of an encoder/decoder for rfc1662
+
 Tasks
 
 [ ] Refactor statemachine
