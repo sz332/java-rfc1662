@@ -52,16 +52,6 @@ public class PacketInformation implements IPacketInformation {
 		this.information = information;	}
 
 	@Override
-	public int getFcs() {
-		return fcs;
-	}
-
-	@Override
-	public void setFcs(int fcs) {
-		this.fcs = fcs;
-	}
-
-	@Override
 	public byte[] getCombinedData() {
 		return combinedData;
 	}

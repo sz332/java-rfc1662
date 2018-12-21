@@ -18,10 +18,6 @@ public interface IPacketInformation {
 
 	void setInformation(byte[] information);
 
-	int getFcs();
-
-	void setFcs(int fcs);
-
 	void setCombinedData(byte[] data);
 	
 	byte[] getCombinedData();

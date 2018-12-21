@@ -31,7 +31,6 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 		int calculatedChecksum = context.config().getFcsCalculator().calculate(context.packetInformation());
 
 		if (expectedChecksum == calculatedChecksum) {
-			context.packetInformation().setFcs(calculatedChecksum);
 			machine.setState(PARSE_VALID_MESSAGE_STATE);
 		} else {
 			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);

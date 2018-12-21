@@ -88,6 +88,16 @@ public class PartialDecodeTest {
 	}
 
 	@Test
+	public void testCRCArrivedButWrong() {
+		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02, 0x0d, 0x4f, 0x7E }));
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(0, result.getMessages().size());
+		Assert.assertEquals(0, result.getRemaining().length);
+	}
+
+	
+	@Test
 	public void testFullMessageArrived() {
 		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02, 0x9d, 0x4f, 0x7E }));
 
