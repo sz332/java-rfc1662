@@ -6,9 +6,5 @@ public class EndOfStreamException extends RuntimeException {
 
 	public EndOfStreamException() {
 	}
-	
-	public EndOfStreamException(Exception e) {
-		super(e);
-	}
-	
+
 }

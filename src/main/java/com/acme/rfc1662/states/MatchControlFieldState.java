@@ -1,6 +1,9 @@
 package com.acme.rfc1662.states;
 
-import com.acme.rfc1662.IParseStateMachine.State;
+
+import static com.acme.rfc1662.IParseStateMachine.State.MATCH_PROTOCOL_FIELD_STATE;
+import static com.acme.rfc1662.IParseStateMachine.State.READ_UNTIL_FIRST_MATCHING_FLAG_STATE;
+
 import com.acme.rfc1662.IParseStateMachine;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
@@ -14,9 +17,9 @@ public class MatchControlFieldState implements IParsingState {
 
 		if (data == FIELD_CONTROL) {
 			context.packetInformation().setControl(FIELD_CONTROL);
-			machine.setState(State.MatchProtocolFieldState);
+			machine.setState(MATCH_PROTOCOL_FIELD_STATE);
 		} else {
-			machine.setState(State.ReadUntilFirstMatchingFlagState);
+			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 		}
 	}
 

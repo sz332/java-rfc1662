@@ -2,8 +2,8 @@ package com.acme.rfc1662.util;
 
 public class ByteArrayPrinter {
 
-	final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-	final static char BUNDLE_SEP = ' ';
+	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+	private static final char BUNDLE_SEP = ' ';
 
 	public String printAsHex(byte[] bytes, int bundleSize) {
 		char[] hexChars = new char[(bytes.length * 2) + (bytes.length / bundleSize)];

@@ -4,6 +4,6 @@ import java.io.ByteArrayInputStream;
 
 public interface IEscapeDecoder {
 
-	int read(ByteArrayInputStream inputStream) throws EndOfStreamException;
-	
+	int read(ByteArrayInputStream inputStream);
+
 }

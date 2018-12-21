@@ -1,9 +1,10 @@
 package com.acme.rfc1662.states;
 
+import static com.acme.rfc1662.IParseStateMachine.State.SEPARATE_INFORMATION_FROM_CHECKSUM_STATE;
+
 import java.io.ByteArrayOutputStream;
 
 import com.acme.rfc1662.IParseStateMachine;
-import com.acme.rfc1662.IParseStateMachine.State;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 
@@ -30,7 +31,7 @@ public class ReadUntilEndingFlagState implements IParsingState {
 
 		context.packetInformation().setCombinedData(bos.toByteArray());
 
-		machine.setState(State.SeparateInformationFromChecksumState);
+		machine.setState(SEPARATE_INFORMATION_FROM_CHECKSUM_STATE);
 	}
 
 }

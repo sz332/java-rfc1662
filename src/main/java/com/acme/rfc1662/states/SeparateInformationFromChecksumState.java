@@ -1,9 +1,11 @@
 package com.acme.rfc1662.states;
 
+import static com.acme.rfc1662.IParseStateMachine.State.PARSE_VALID_MESSAGE_STATE;
+import static com.acme.rfc1662.IParseStateMachine.State.READ_UNTIL_FIRST_MATCHING_FLAG_STATE;
+
 import java.util.Arrays;
 
 import com.acme.rfc1662.IParseStateMachine;
-import com.acme.rfc1662.IParseStateMachine.State;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 
@@ -17,7 +19,7 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 		int fcsLength = context.config().fcsLengthInBytes();
 
 		if (data.length < fcsLength) {
-			machine.setState(State.ReadUntilFirstMatchingFlagState);
+			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 			return;
 		}
 
@@ -30,9 +32,9 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 
 		if (expectedChecksum == calculatedChecksum) {
 			context.packetInformation().setFcs(calculatedChecksum);
-			machine.setState(State.ParseValidMessageState);
+			machine.setState(PARSE_VALID_MESSAGE_STATE);
 		} else {
-			machine.setState(State.ReadUntilFirstMatchingFlagState);
+			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 		}
 
 	}

@@ -11,7 +11,7 @@ public class EscapeDecoder implements IEscapeDecoder {
 	private static final int CONTROL_ESCAPE = 0x7d;
 
 	@Override
-	public int read(ByteArrayInputStream inputStream) throws EndOfStreamException{
+	public int read(ByteArrayInputStream inputStream) {
 
 		int data = inputStream.read();
 
