@@ -1,10 +1,10 @@
 package com.acme.rfc1662;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import static com.acme.rfc1662.IntArray.join;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 
 // http://www.netfor2.com/ppp.htm
 // https://stackoverflow.com/questions/7983862/calculating-fcscrc-for-hdlc-frame
@@ -80,7 +80,6 @@ public class DecodeTest {
 		Assert.assertEquals(0, result.getRemaining().length);
 	}
 
-
 	// FIXME
 	@Test
 	public void testWrongAddress() {
@@ -118,7 +117,7 @@ public class DecodeTest {
 		Assert.assertEquals(0, result.getMessages().size());
 		Assert.assertEquals(4, result.getRemaining().length);
 	}
-	
+
 	@Test
 	public void testNoContentNoCRCButClosing() {
 		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x13, 0x7E }));
@@ -127,7 +126,7 @@ public class DecodeTest {
 		Assert.assertEquals(0, result.getMessages().size());
 		Assert.assertEquals(0, result.getRemaining().length);
 	}
-	
+
 	@Test
 	public void testNoContentNoCRCAndClosing() {
 		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x00, 0x00, 0x7E }));
@@ -137,30 +136,6 @@ public class DecodeTest {
 		Assert.assertEquals(0, result.getRemaining().length);
 	}
 
-	private ByteArrayInputStream join(int[]... lists) {
-
-		int length = 0;
-
-		for (int i = 0; i < lists.length; i++) {
-			length += lists[i].length;
-		}
-
-		int[] result = new int[length];
-
-		int position = 0;
-
-		for (int i = 0; i < lists.length; i++) {
-			System.arraycopy(lists[i], 0, result, position, lists[i].length);
-			position += lists[i].length;
-		}
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-		for (int i : result) {
-			bos.write(i);
-		}
-
-		return new ByteArrayInputStream(bos.toByteArray());
-	}
+	
 
 }
