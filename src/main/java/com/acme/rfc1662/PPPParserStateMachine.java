@@ -10,8 +10,9 @@ import com.acme.rfc1662.states.ReadUntilFirstMatchingFlagState;
 
 public class PPPParserStateMachine implements IParseStateMachine {
 
+	IPacketInformation packetInformation;
 	IParsingContext context;
-	IParseState currentState;
+	IParsingState currentState;
 
 	public ParserResult parse(ByteArrayInputStream inputStream) {
 
@@ -34,7 +35,7 @@ public class PPPParserStateMachine implements IParseStateMachine {
 	}
 
 	@Override
-	public void setState(IParseState state) {
+	public void setState(IParsingState state) {
 		this.currentState = state;
 		this.currentState.doAction(this, context);
 	}

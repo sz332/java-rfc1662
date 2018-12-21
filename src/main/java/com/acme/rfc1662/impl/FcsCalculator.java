@@ -3,21 +3,21 @@ package com.acme.rfc1662.impl;
 import java.io.ByteArrayOutputStream;
 
 import com.acme.rfc1662.IFcsCalculator;
-import com.acme.rfc1662.PacketInformation;
+import com.acme.rfc1662.IPacketInformation;
 
 public class FcsCalculator implements IFcsCalculator {
 
 	private static final Fcs16Calculator calculator = new Fcs16Calculator();
 	
 	@Override
-	public int calculate(PacketInformation information) {
+	public int calculate(IPacketInformation information) {
 
 		byte[] data = convertPacketInformation(information);
 
 		return calculator.calculate(data);
 	}
 
-	private byte[] convertPacketInformation(PacketInformation information) {
+	private byte[] convertPacketInformation(IPacketInformation information) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
 		bos.write(information.getAddress());

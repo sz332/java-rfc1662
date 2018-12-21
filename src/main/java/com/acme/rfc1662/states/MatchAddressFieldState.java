@@ -1,22 +1,21 @@
 package com.acme.rfc1662.states;
 
 import com.acme.rfc1662.IParsingContext;
+import com.acme.rfc1662.IParsingState;
+import com.acme.rfc1662.IPacketInformation;
 import com.acme.rfc1662.IParseStateMachine;
-import com.acme.rfc1662.PacketInformation;
 
-public class MatchAddressFieldState extends AbstractState {
+public class MatchAddressFieldState implements IParsingState{
 
 	private static final int FIELD_ADDRESS = 0xFF;
 
-	public MatchAddressFieldState(PacketInformation packetInformation) {
-		super(packetInformation);
-	}
 
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
 		int data = context.config().getDecoder().read(context.getInputStream());
 
 		if (data == FIELD_ADDRESS) {
-			machine.setState(new MatchControlFieldState(packetInformation.setAddress(FIELD_ADDRESS)));
+			context.packetInformation().setAddress(FIELD_ADDRESS);
+			machine.setState(new MatchControlFieldState());
 		} else {
 			machine.setState(new ReadUntilFirstMatchingFlagState());
 		}

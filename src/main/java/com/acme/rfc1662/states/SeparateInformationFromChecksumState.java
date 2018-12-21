@@ -2,20 +2,19 @@ package com.acme.rfc1662.states;
 
 import java.util.Arrays;
 
-import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParseStateMachine;
-import com.acme.rfc1662.PacketInformation;
+import com.acme.rfc1662.IParsingContext;
+import com.acme.rfc1662.IParsingState;
 
 /**
  * 
  *
  */
-public class SeparateInformationFromChecksumState extends AbstractState {
+public class SeparateInformationFromChecksumState implements IParsingState {
 
 	final byte[] data;
 
-	public SeparateInformationFromChecksumState(PacketInformation packetInformation, byte[] data) {
-		super(packetInformation);
+	public SeparateInformationFromChecksumState(byte[] data) {
 		this.data = data;
 	}
 
@@ -28,15 +27,16 @@ public class SeparateInformationFromChecksumState extends AbstractState {
 			return;
 		}
 		
-		this.packetInformation.setInformation(Arrays.copyOf(data, data.length - fcsLength));
+		context.packetInformation().setInformation(Arrays.copyOf(data, data.length - fcsLength));
 
 		byte[] checksum = Arrays.copyOfRange(data, data.length - fcsLength, data.length);
 
 		int expectedChecksum = byteToInt(checksum);
-		int calculatedChecksum = context.config().getFcsCalculator().calculate(this.packetInformation);
+		int calculatedChecksum = context.config().getFcsCalculator().calculate(context.packetInformation());
 
 		if (expectedChecksum == calculatedChecksum) {
-			machine.setState(new ParseValidMessageState(packetInformation.setFcs(calculatedChecksum)));
+			context.packetInformation().setFcs(calculatedChecksum);
+			machine.setState(new ParseValidMessageState());
 		} else {
 			machine.setState(new ReadUntilFirstMatchingFlagState());
 		}

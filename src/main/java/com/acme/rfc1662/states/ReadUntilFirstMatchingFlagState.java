@@ -1,11 +1,11 @@
 package com.acme.rfc1662.states;
 
 import com.acme.rfc1662.IParsingContext;
-import com.acme.rfc1662.IParseState;
+import com.acme.rfc1662.impl.PacketInformation;
+import com.acme.rfc1662.IParsingState;
 import com.acme.rfc1662.IParseStateMachine;
-import com.acme.rfc1662.PacketInformation;
 
-public class ReadUntilFirstMatchingFlagState implements IParseState {
+public class ReadUntilFirstMatchingFlagState implements IParsingState {
 
 	private static final int FIELD_FLAG = 0x7E;
 
@@ -21,7 +21,7 @@ public class ReadUntilFirstMatchingFlagState implements IParseState {
 			result = context.config().getDecoder().read(context.getInputStream());
 		} while (result != FIELD_FLAG);
 
-		machine.setState(new MatchAddressFieldState(new PacketInformation()));
+		machine.setState(new MatchAddressFieldState());
 	}
 
 }

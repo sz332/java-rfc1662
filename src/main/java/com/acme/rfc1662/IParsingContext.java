@@ -8,5 +8,6 @@ public interface IParsingContext {
 
 	IParsingContextConfig config();
 	IParsingContextResult result();
+	IPacketInformation packetInformation();
 
 }
