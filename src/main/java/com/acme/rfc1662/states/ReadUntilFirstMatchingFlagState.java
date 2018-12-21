@@ -9,9 +9,7 @@ public class ReadUntilFirstMatchingFlagState implements IParsingState {
 
 	private static final int FIELD_FLAG = 0x7E;
 
-	public ReadUntilFirstMatchingFlagState() {
-	}
-
+	@Override
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
 
 		int result = -1;
