@@ -10,7 +10,7 @@ public class MatchControlFieldState implements IParsingState {
 	private static final int FIELD_CONTROL = 0x3;
 
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
-		int data = context.config().getDecoder().read(context.getInputStream());
+		int data = context.config().getDecoder().read(context.inputStream());
 
 		if (data == FIELD_CONTROL) {
 			context.packetInformation().setControl(FIELD_CONTROL);

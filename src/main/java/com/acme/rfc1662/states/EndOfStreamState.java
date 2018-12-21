@@ -8,10 +8,10 @@ public class EndOfStreamState implements IParsingState{
 
 	@Override
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
-		context.getInputStream().reset();
+		context.inputStream().reset();
 
-		byte[] remaining = new byte[context.getInputStream().available()];
-		context.getInputStream().read(remaining, 0, remaining.length);
+		byte[] remaining = new byte[context.inputStream().available()];
+		context.inputStream().read(remaining, 0, remaining.length);
 		
 		context.result().setRemaining(remaining);
 	}

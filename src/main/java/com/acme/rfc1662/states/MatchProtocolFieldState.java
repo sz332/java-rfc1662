@@ -12,7 +12,7 @@ public class MatchProtocolFieldState implements IParsingState{
 	@Override
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
 
-		ByteArrayInputStream is = context.getInputStream();
+		ByteArrayInputStream is = context.inputStream();
 
 		if (context.config().protocolFieldLengthInBytes() == 1) {
 			readOneByte(machine, context, is);

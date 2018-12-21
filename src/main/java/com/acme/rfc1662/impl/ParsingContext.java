@@ -22,7 +22,7 @@ public class ParsingContext implements IParsingContext {
 	}
 
 	@Override
-	public ByteArrayInputStream getInputStream() {
+	public ByteArrayInputStream inputStream() {
 		return this.inputStream;
 	}
 

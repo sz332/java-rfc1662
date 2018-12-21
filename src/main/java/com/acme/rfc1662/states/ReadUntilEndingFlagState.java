@@ -18,7 +18,7 @@ public class ReadUntilEndingFlagState implements IParsingState {
 		int data = -1;
 
 		do {
-			data = context.config().getDecoder().read(context.getInputStream());
+			data = context.config().getDecoder().read(context.inputStream());
 
 			if (data != FIELD_FLAG) {
 				bos.write(data);
@@ -26,7 +26,7 @@ public class ReadUntilEndingFlagState implements IParsingState {
 
 		} while (data != FIELD_FLAG);
 
-		context.getInputStream().mark(0);
+		context.inputStream().mark(0);
 
 		context.packetInformation().setCombinedData(bos.toByteArray());
 

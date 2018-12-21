@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 
 public interface IParsingContext {
 
-	ByteArrayInputStream getInputStream();
+	ByteArrayInputStream inputStream();
 
 	IParsingContextConfig config();
 	IParsingContextResult result();

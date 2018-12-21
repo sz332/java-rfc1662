@@ -15,8 +15,8 @@ public class ReadUntilFirstMatchingFlagState implements IParsingState {
 		int result = -1;
 
 		do {
-			context.getInputStream().mark(0);
-			result = context.config().getDecoder().read(context.getInputStream());
+			context.inputStream().mark(0);
+			result = context.config().getDecoder().read(context.inputStream());
 		} while (result != FIELD_FLAG);
 
 		machine.setState(State.MatchAddressFieldState);
