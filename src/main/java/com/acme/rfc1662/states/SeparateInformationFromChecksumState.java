@@ -21,7 +21,7 @@ public class SeparateInformationFromChecksumState extends AbstractState {
 
 	@Override
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
-		int fcsLength = context.fcsLengthInBytes();
+		int fcsLength = context.config().fcsLengthInBytes();
 
 		if (data.length < fcsLength) {
 			machine.setState(new ReadUntilFirstMatchingFlagState());
@@ -33,7 +33,7 @@ public class SeparateInformationFromChecksumState extends AbstractState {
 		byte[] checksum = Arrays.copyOfRange(data, data.length - fcsLength, data.length);
 
 		int expectedChecksum = byteToInt(checksum);
-		int calculatedChecksum = context.getFcsCalculator().calculate(this.packetInformation);
+		int calculatedChecksum = context.config().getFcsCalculator().calculate(this.packetInformation);
 
 		if (expectedChecksum == calculatedChecksum) {
 			machine.setState(new ParseValidMessageState(packetInformation.setFcs(calculatedChecksum)));

@@ -16,9 +16,9 @@ public class MatchProtocolFieldState extends AbstractState {
 
 		ByteArrayInputStream is = context.getInputStream();
 
-		if (context.protocolFieldLengthInBytes() == 1) {
+		if (context.config().protocolFieldLengthInBytes() == 1) {
 			readOneByte(machine, context, is);
-		} else if (context.protocolFieldLengthInBytes() == 2) {
+		} else if (context.config().protocolFieldLengthInBytes() == 2) {
 			readTwoBytes(machine, context, is);
 		} else {
 			machine.setState(new UnknownProtocolLengthState());
@@ -27,13 +27,13 @@ public class MatchProtocolFieldState extends AbstractState {
 	}
 
 	private void readOneByte(IParseStateMachine machine, IParsingContext context, ByteArrayInputStream is) {
-		int data = context.getDecoder().read(is);
+		int data = context.config().getDecoder().read(is);
 		machine.setState(new ReadUntilEndingFlagState(packetInformation.setProtocol(new byte[] { (byte) data })));
 	}
 
 	private void readTwoBytes(IParseStateMachine machine, IParsingContext context, ByteArrayInputStream is) {
-		int first = context.getDecoder().read(is);
-		int second = context.getDecoder().read(is);
+		int first = context.config().getDecoder().read(is);
+		int second = context.config().getDecoder().read(is);
 
 		machine.setState(new ReadUntilEndingFlagState(packetInformation.setProtocol(new byte[] { (byte) first, (byte) second })));
 	}

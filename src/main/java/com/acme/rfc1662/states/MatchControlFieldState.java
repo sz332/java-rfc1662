@@ -13,7 +13,7 @@ public class MatchControlFieldState extends AbstractState {
 	}
 
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
-		int data = context.getDecoder().read(context.getInputStream());
+		int data = context.config().getDecoder().read(context.getInputStream());
 
 		if (data == FIELD_CONTROL) {
 			machine.setState(new MatchProtocolFieldState(packetInformation.setControl(FIELD_CONTROL)));

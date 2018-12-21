@@ -20,7 +20,7 @@ public class ReadUntilEndingFlagState extends AbstractState {
 		int data = -1;
 
 		do {
-			data = context.getDecoder().read(context.getInputStream());
+			data = context.config().getDecoder().read(context.getInputStream());
 
 			if (data != FIELD_FLAG) {
 				bos.write(data);

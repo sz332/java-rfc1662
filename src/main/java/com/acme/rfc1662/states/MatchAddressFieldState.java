@@ -13,7 +13,7 @@ public class MatchAddressFieldState extends AbstractState {
 	}
 
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
-		int data = context.getDecoder().read(context.getInputStream());
+		int data = context.config().getDecoder().read(context.getInputStream());
 
 		if (data == FIELD_ADDRESS) {
 			machine.setState(new MatchControlFieldState(packetInformation.setAddress(FIELD_ADDRESS)));

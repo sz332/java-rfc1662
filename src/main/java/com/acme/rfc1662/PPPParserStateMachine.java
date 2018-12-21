@@ -4,7 +4,8 @@ import java.io.ByteArrayInputStream;
 
 import com.acme.rfc1662.impl.EscapeDecoder;
 import com.acme.rfc1662.impl.FcsCalculator;
-import com.acme.rfc1662.impl.ParseContext;
+import com.acme.rfc1662.impl.ParsingContext;
+import com.acme.rfc1662.impl.ParsingContextConfig;
 import com.acme.rfc1662.states.ReadUntilFirstMatchingFlagState;
 
 public class PPPParserStateMachine implements IParseStateMachine {
@@ -16,7 +17,7 @@ public class PPPParserStateMachine implements IParseStateMachine {
 
 		inputStream.mark(0);
 
-		this.context = new ParseContext(new EscapeDecoder(), new FcsCalculator(), inputStream, 2, 2);
+		this.context = new ParsingContext(new ParsingContextConfig(new EscapeDecoder(), new FcsCalculator(), 2, 2), inputStream);
 
 		try {
 			this.setState(new ReadUntilFirstMatchingFlagState());
