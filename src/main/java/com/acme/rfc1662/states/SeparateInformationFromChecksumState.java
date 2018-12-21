@@ -3,30 +3,24 @@ package com.acme.rfc1662.states;
 import java.util.Arrays;
 
 import com.acme.rfc1662.IParseStateMachine;
+import com.acme.rfc1662.IParseStateMachine.State;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 
-/**
- * 
- *
- */
 public class SeparateInformationFromChecksumState implements IParsingState {
-
-	final byte[] data;
-
-	public SeparateInformationFromChecksumState(byte[] data) {
-		this.data = data;
-	}
 
 	@Override
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
+
+		byte[] data = context.packetInformation().getCombinedData();
+
 		int fcsLength = context.config().fcsLengthInBytes();
 
 		if (data.length < fcsLength) {
-			machine.setState(new ReadUntilFirstMatchingFlagState());
+			machine.setState(State.ReadUntilFirstMatchingFlagState);
 			return;
 		}
-		
+
 		context.packetInformation().setInformation(Arrays.copyOf(data, data.length - fcsLength));
 
 		byte[] checksum = Arrays.copyOfRange(data, data.length - fcsLength, data.length);
@@ -36,9 +30,9 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 
 		if (expectedChecksum == calculatedChecksum) {
 			context.packetInformation().setFcs(calculatedChecksum);
-			machine.setState(new ParseValidMessageState());
+			machine.setState(State.ParseValidMessageState);
 		} else {
-			machine.setState(new ReadUntilFirstMatchingFlagState());
+			machine.setState(State.ReadUntilFirstMatchingFlagState);
 		}
 
 	}

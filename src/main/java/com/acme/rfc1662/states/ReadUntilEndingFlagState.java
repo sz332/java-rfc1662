@@ -3,10 +3,11 @@ package com.acme.rfc1662.states;
 import java.io.ByteArrayOutputStream;
 
 import com.acme.rfc1662.IParseStateMachine;
+import com.acme.rfc1662.IParseStateMachine.State;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 
-public class ReadUntilEndingFlagState implements IParsingState{
+public class ReadUntilEndingFlagState implements IParsingState {
 
 	private static final int FIELD_FLAG = 0x7E;
 
@@ -24,10 +25,12 @@ public class ReadUntilEndingFlagState implements IParsingState{
 			}
 
 		} while (data != FIELD_FLAG);
-		
+
 		context.getInputStream().mark(0);
 
-		machine.setState(new SeparateInformationFromChecksumState(bos.toByteArray()));
+		context.packetInformation().setCombinedData(bos.toByteArray());
+
+		machine.setState(State.SeparateInformationFromChecksumState);
 	}
 
 }

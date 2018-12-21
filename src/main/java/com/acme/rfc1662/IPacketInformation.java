@@ -4,22 +4,26 @@ public interface IPacketInformation {
 
 	int getAddress();
 
-	IPacketInformation setAddress(int address);
+	void setAddress(int address);
 
 	int getControl();
 
-	IPacketInformation setControl(int control);
+	void setControl(int control);
 
 	byte[] getProtocol();
 
-	IPacketInformation setProtocol(byte[] protocol);
+	void setProtocol(byte[] protocol);
 
 	byte[] getInformation();
 
-	IPacketInformation setInformation(byte[] information);
+	void setInformation(byte[] information);
 
 	int getFcs();
 
-	IPacketInformation setFcs(int fcs);
+	void setFcs(int fcs);
+
+	void setCombinedData(byte[] data);
+	
+	byte[] getCombinedData();
 
 }

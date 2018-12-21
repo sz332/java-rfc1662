@@ -10,15 +10,16 @@ public class PacketInformation implements IPacketInformation {
 	byte[] information;
 	int fcs;
 
+	byte[] combinedData;
+
 	@Override
 	public int getAddress() {
 		return address;
 	}
 
 	@Override
-	public IPacketInformation setAddress(int address) {
+	public void setAddress(int address) {
 		this.address = address;
-		return this;
 	}
 
 	@Override
@@ -27,9 +28,8 @@ public class PacketInformation implements IPacketInformation {
 	}
 
 	@Override
-	public IPacketInformation setControl(int control) {
+	public void setControl(int control) {
 		this.control = control;
-		return this;
 	}
 
 	@Override
@@ -38,9 +38,8 @@ public class PacketInformation implements IPacketInformation {
 	}
 
 	@Override
-	public IPacketInformation setProtocol(byte[] protocol) {
+	public void setProtocol(byte[] protocol) {
 		this.protocol = protocol;
-		return this;
 	}
 
 	@Override
@@ -49,20 +48,27 @@ public class PacketInformation implements IPacketInformation {
 	}
 
 	@Override
-	public IPacketInformation setInformation(byte[] information) {
-		this.information = information;
-		return this;
-	}
-	
+	public void setInformation(byte[] information) {
+		this.information = information;	}
+
 	@Override
 	public int getFcs() {
 		return fcs;
 	}
-	
+
 	@Override
-	public IPacketInformation setFcs(int fcs) {
+	public void setFcs(int fcs) {
 		this.fcs = fcs;
-		return this;
 	}
 
+	@Override
+	public byte[] getCombinedData() {
+		return combinedData;
+	}
+	
+	@Override
+	public void setCombinedData(byte[] data) {
+		this.combinedData = data;
+	}
+	
 }
