@@ -26,10 +26,10 @@ public class PPPParserStateMachine implements IParseStateMachine {
 			byte[] remaining = new byte[inputStream.available()];
 			inputStream.read(remaining, 0, remaining.length);
 
-			return new ParserResult(remaining, this.context.getMessages());
+			return new ParserResult(remaining, this.context.result().getMessages());
 		}
 
-		return new ParserResult(new byte[0], this.context.getMessages());
+		return new ParserResult(new byte[0], this.context.result().getMessages());
 	}
 
 	@Override

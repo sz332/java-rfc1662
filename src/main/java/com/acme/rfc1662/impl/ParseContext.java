@@ -7,6 +7,7 @@ import java.util.List;
 import com.acme.rfc1662.IEscapeDecoder;
 import com.acme.rfc1662.IFcsCalculator;
 import com.acme.rfc1662.IParsingContext;
+import com.acme.rfc1662.IParsingContextResult;
 
 public class ParseContext implements IParsingContext {
 
@@ -15,15 +16,15 @@ public class ParseContext implements IParsingContext {
 	private final ByteArrayInputStream inputStream;
 	private final int protocolFieldLengthInBytes;
 	private final int fcsLengthInBytes;
-	private final List<byte[]> messages;
-
+	private final IParsingContextResult result;
+	
 	public ParseContext(IEscapeDecoder decoder, IFcsCalculator calculator, ByteArrayInputStream inputStream, int protocolFieldLengthInBytes, int fcsLengthInBytes) {
 		this.decoder = decoder;
 		this.calculator = calculator;
 		this.inputStream = inputStream;
 		this.protocolFieldLengthInBytes = protocolFieldLengthInBytes;
 		this.fcsLengthInBytes = fcsLengthInBytes;
-		this.messages = new ArrayList<>();
+		this.result = new ParsingContextResult();
 	}
 
 	@Override
@@ -50,15 +51,9 @@ public class ParseContext implements IParsingContext {
 	public int fcsLengthInBytes() {
 		return this.fcsLengthInBytes;
 	}
-	
-	@Override
-	public void addMessage(byte[] data) {
-		this.messages.add(data);
-	}
 
 	@Override
-	public List<byte[]> getMessages() {
-		return this.messages;
+	public IParsingContextResult result() {
+		return result;
 	}
-	
 }

@@ -12,7 +12,7 @@ public class ParseValidMessageState extends AbstractState {
 
 	@Override
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
-		context.addMessage(packetInformation.getInformation());
+		context.result().addMessage(packetInformation.getInformation());
 		machine.setState(new ReadUntilFirstMatchingFlagState());
 	}
 
