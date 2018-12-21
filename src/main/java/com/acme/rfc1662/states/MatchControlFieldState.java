@@ -1,6 +1,6 @@
 package com.acme.rfc1662.states;
 
-import com.acme.rfc1662.IParseContext;
+import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParseStateMachine;
 import com.acme.rfc1662.PacketInformation;
 
@@ -12,7 +12,7 @@ public class MatchControlFieldState extends AbstractState {
 		super(packetInformation);
 	}
 
-	public void doAction(IParseStateMachine machine, IParseContext context) {
+	public void doAction(IParseStateMachine machine, IParsingContext context) {
 		int data = context.getDecoder().read(context.getInputStream());
 
 		if (data == FIELD_CONTROL) {

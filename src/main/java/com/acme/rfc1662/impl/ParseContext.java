@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.acme.rfc1662.IEscapeDecoder;
 import com.acme.rfc1662.IFcsCalculator;
-import com.acme.rfc1662.IParseContext;
+import com.acme.rfc1662.IParsingContext;
 
-public class ParseContext implements IParseContext {
+public class ParseContext implements IParsingContext {
 
 	private final IEscapeDecoder decoder;
 	private final IFcsCalculator calculator;

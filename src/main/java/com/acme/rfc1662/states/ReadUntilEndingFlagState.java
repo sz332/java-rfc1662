@@ -2,7 +2,7 @@ package com.acme.rfc1662.states;
 
 import java.io.ByteArrayOutputStream;
 
-import com.acme.rfc1662.IParseContext;
+import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParseStateMachine;
 import com.acme.rfc1662.PacketInformation;
 
@@ -14,7 +14,7 @@ public class ReadUntilEndingFlagState extends AbstractState {
 		super(packetInformation);
 	}
 
-	public void doAction(IParseStateMachine machine, IParseContext context) {
+	public void doAction(IParseStateMachine machine, IParsingContext context) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
 		int data = -1;

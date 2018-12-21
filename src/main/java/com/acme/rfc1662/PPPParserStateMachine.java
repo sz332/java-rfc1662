@@ -9,7 +9,7 @@ import com.acme.rfc1662.states.ReadUntilFirstMatchingFlagState;
 
 public class PPPParserStateMachine implements IParseStateMachine {
 
-	IParseContext context;
+	IParsingContext context;
 	IParseState currentState;
 
 	public ParserResult parse(ByteArrayInputStream inputStream) {

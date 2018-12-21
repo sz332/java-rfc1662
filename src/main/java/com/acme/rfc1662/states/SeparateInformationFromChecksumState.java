@@ -2,7 +2,7 @@ package com.acme.rfc1662.states;
 
 import java.util.Arrays;
 
-import com.acme.rfc1662.IParseContext;
+import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParseStateMachine;
 import com.acme.rfc1662.PacketInformation;
 
@@ -20,7 +20,7 @@ public class SeparateInformationFromChecksumState extends AbstractState {
 	}
 
 	@Override
-	public void doAction(IParseStateMachine machine, IParseContext context) {
+	public void doAction(IParseStateMachine machine, IParsingContext context) {
 		int fcsLength = context.fcsLengthInBytes();
 
 		if (data.length < fcsLength) {
