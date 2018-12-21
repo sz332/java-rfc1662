@@ -5,10 +5,11 @@ import java.util.List;
 
 import com.acme.rfc1662.IParsingContextResult;
 
-public class ParsingContextResult implements IParsingContextResult{
+public class ParsingContextResult implements IParsingContextResult {
 
-	private final List<byte[]> messages = new ArrayList<>();
-	
+	private List<byte[]> messages = new ArrayList<>();
+	private byte[] remaining = new byte[0];
+
 	@Override
 	public void addMessage(byte[] data) {
 		messages.add(data);
@@ -18,5 +19,13 @@ public class ParsingContextResult implements IParsingContextResult{
 	public List<byte[]> getMessages() {
 		return messages;
 	}
-	
+
+	public void setRemaining(byte[] remaining) {
+		this.remaining = remaining;
+	}
+
+	public byte[] getRemaining() {
+		return remaining;
+	}
+
 }

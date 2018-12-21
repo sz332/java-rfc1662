@@ -4,10 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.acme.rfc1662.impl.EscapeDecoder;
 import com.acme.rfc1662.impl.FcsCalculator;
 import com.acme.rfc1662.impl.ParsingContext;
 import com.acme.rfc1662.impl.ParsingContextConfig;
+import com.acme.rfc1662.states.EndOfStreamState;
 import com.acme.rfc1662.states.MatchAddressFieldState;
 import com.acme.rfc1662.states.MatchControlFieldState;
 import com.acme.rfc1662.states.MatchProtocolFieldState;
@@ -19,11 +23,13 @@ import com.acme.rfc1662.states.UnknownProtocolLengthState;
 
 public class PPPParserStateMachine implements IParseStateMachine {
 
+	private static final Logger logger = LoggerFactory.getLogger(PPPParserStateMachine.class);
+
 	IPacketInformation packetInformation;
 	IParsingContext context;
 	IParsingState currentState;
 	Map<State, IParsingState> states = new HashMap<>();
-	
+
 	public PPPParserStateMachine() {
 		states.put(State.MatchAddressFieldState, new MatchAddressFieldState());
 		states.put(State.MatchControlFieldState, new MatchControlFieldState());
@@ -33,6 +39,7 @@ public class PPPParserStateMachine implements IParseStateMachine {
 		states.put(State.ReadUntilFirstMatchingFlagState, new ReadUntilFirstMatchingFlagState());
 		states.put(State.SeparateInformationFromChecksumState, new SeparateInformationFromChecksumState());
 		states.put(State.UnknownProtocolLengthState, new UnknownProtocolLengthState());
+		states.put(State.EndOfStreamState, new EndOfStreamState());
 	}
 
 	public ParserResult parse(ByteArrayInputStream inputStream) {
@@ -41,27 +48,25 @@ public class PPPParserStateMachine implements IParseStateMachine {
 
 		this.context = new ParsingContext(new ParsingContextConfig(new EscapeDecoder(), new FcsCalculator(), 2, 2), inputStream);
 
-		try {
-			this.setState(State.ReadUntilFirstMatchingFlagState);
-		} catch (EndOfStreamException e) {
-			
-			// FIXME using exception for control, yuck...
-			
-			inputStream.reset();
+		this.setState(State.ReadUntilFirstMatchingFlagState);
 
-			byte[] remaining = new byte[inputStream.available()];
-			inputStream.read(remaining, 0, remaining.length);
-
-			return new ParserResult(remaining, this.context.result().getMessages());
-		}
-
-		return new ParserResult(new byte[0], this.context.result().getMessages());
+		return new ParserResult(this.context.result().getRemaining(), this.context.result().getMessages());
 	}
 
 	@Override
 	public void setState(State state) {
-		this.currentState = states.get(state);
-		this.currentState.doAction(this, context);
+
+		if (!states.containsKey(state)) {
+			logger.error("No class is assigned to state {}, exiting...", state);
+			return;
+		}
+
+		try {
+			this.currentState = states.get(state);
+			this.currentState.doAction(this, context);
+		} catch (EndOfStreamException e) {
+			this.setState(State.EndOfStreamState);
+		}
 	}
 
 }

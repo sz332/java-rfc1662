@@ -5,11 +5,12 @@ import com.acme.rfc1662.IParseStateMachine.State;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 
-public class MatchAddressFieldState implements IParsingState{
+public class MatchAddressFieldState implements IParsingState {
 
 	private static final int FIELD_ADDRESS = 0xFF;
 
 	public void doAction(IParseStateMachine machine, IParsingContext context) {
+
 		int data = context.config().getDecoder().read(context.getInputStream());
 
 		if (data == FIELD_ADDRESS) {

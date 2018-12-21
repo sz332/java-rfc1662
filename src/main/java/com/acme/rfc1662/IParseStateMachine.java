@@ -10,7 +10,8 @@ public interface IParseStateMachine {
 		ReadUntilEndingFlagState,
 		ReadUntilFirstMatchingFlagState,
 		SeparateInformationFromChecksumState,
-		UnknownProtocolLengthState
+		UnknownProtocolLengthState,
+		EndOfStreamState
 	}
 	
 	void setState(State state);
