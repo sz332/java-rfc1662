@@ -25,9 +25,8 @@ public class PPPParserStateMachine implements IParseStateMachine {
 
 	private static final Logger logger = LoggerFactory.getLogger(PPPParserStateMachine.class);
 
-	IPacketInformation packetInformation;
 	IParsingContext context;
-	IParsingState currentState;
+
 	Map<State, IParsingState> states = new HashMap<>();
 
 	public PPPParserStateMachine() {
@@ -62,8 +61,8 @@ public class PPPParserStateMachine implements IParseStateMachine {
 		}
 
 		try {
-			this.currentState = states.get(state);
-			this.currentState.doAction(this, context);
+			IParsingState newState = states.get(state);
+			newState.doAction(this, context);
 		} catch (EndOfStreamException e) {
 			this.setState(State.EndOfStreamState);
 		}
