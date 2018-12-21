@@ -17,10 +17,9 @@ public class ReadUntilFirstMatchingFlagState implements IParseState {
 		int result = -1;
 
 		do {
+			context.getInputStream().mark(0);
 			result = context.getDecoder().read(context.getInputStream());
 		} while (result != FIELD_FLAG);
-		
-		context.getInputStream().mark(0);
 
 		machine.setState(new MatchAddressFieldState(new PacketInformation()));
 	}

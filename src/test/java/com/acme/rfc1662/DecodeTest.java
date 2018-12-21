@@ -58,7 +58,7 @@ public class DecodeTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1, result.getMessages().size());
-		Assert.assertEquals(3, result.getRemaining().length);
+		Assert.assertEquals(0, result.getRemaining().length);
 	}
 
 	// FIXME
@@ -68,7 +68,7 @@ public class DecodeTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1, result.getMessages().size());
-		Assert.assertEquals(3, result.getRemaining().length);
+		Assert.assertEquals(0, result.getRemaining().length);
 	}
 
 	@Test
@@ -80,42 +80,22 @@ public class DecodeTest {
 		Assert.assertEquals(0, result.getRemaining().length);
 	}
 
-	// FIXME
 	@Test
 	public void testWrongAddress() {
 		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0x12, 0x03 }));
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(2, result.getRemaining().length);
+		Assert.assertEquals(0, result.getRemaining().length);
 	}
 
-	// FIXME
 	@Test
 	public void testWrongControl() {
 		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x04 }));
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(2, result.getRemaining().length);
-	}
-
-	@Test
-	public void testOneByteInsteadOfTwoForProtocol() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x03, 0x15 }));
-
-		Assert.assertNotNull(result);
-		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(3, result.getRemaining().length);
-	}
-
-	@Test
-	public void testNoContentNoCRCandNoClosing() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x13 }));
-
-		Assert.assertNotNull(result);
-		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(4, result.getRemaining().length);
+		Assert.assertEquals(0, result.getRemaining().length);
 	}
 
 	@Test
