@@ -44,6 +44,9 @@ public class PPPParserStateMachine implements IParseStateMachine {
 		try {
 			this.setState(State.ReadUntilFirstMatchingFlagState);
 		} catch (EndOfStreamException e) {
+			
+			// FIXME using exception for control, yuck...
+			
 			inputStream.reset();
 
 			byte[] remaining = new byte[inputStream.available()];
