@@ -11,6 +11,8 @@ import com.acme.rfc1662.IEscapeDecoder;
 import com.acme.rfc1662.IPacketInformation;
 import com.acme.rfc1662.IParsingStateMachine;
 import com.acme.rfc1662.IParsingStateMachine.State;
+import com.acme.rfc1662.enums.FrameCheckSequence;
+import com.acme.rfc1662.enums.Protocol;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingContextConfig;
 
@@ -26,7 +28,8 @@ public class MatchProtocolFieldStateTest {
 		
 		when(decoder.read(any())).thenReturn(5);
 		when(config.getDecoder()).thenReturn(decoder);
-		when(config.protocolFieldLengthInBytes()).thenReturn(1);
+		when(config.getFcs()).thenReturn(FrameCheckSequence.TWO_OCTET);
+		when(config.getProtocol()).thenReturn(Protocol.ONE_OCTET);
 		when(context.config()).thenReturn(config);
 		when(context.packetInformation()).thenReturn(packetInformation);
 		

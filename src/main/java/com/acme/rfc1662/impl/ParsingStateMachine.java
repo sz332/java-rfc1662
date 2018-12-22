@@ -17,6 +17,8 @@ import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 import com.acme.rfc1662.IParsingStateMachine;
 import com.acme.rfc1662.ParserResult;
+import com.acme.rfc1662.enums.FrameCheckSequence;
+import com.acme.rfc1662.enums.Protocol;
 import com.acme.rfc1662.states.EndOfStreamState;
 import com.acme.rfc1662.states.MatchAddressFieldState;
 import com.acme.rfc1662.states.MatchControlFieldState;
@@ -32,7 +34,16 @@ public class ParsingStateMachine implements IParsingStateMachine {
 
 	EnumMap<State, IParsingState> states = new EnumMap<>(State.class);
 
-	public ParsingStateMachine() {
+	Protocol protocol;
+	FrameCheckSequence fcs;
+	
+	public ParsingStateMachine(Protocol protocol, FrameCheckSequence fcs) {
+		this.protocol = protocol;
+		this.fcs = fcs;
+		this.initStates();
+	}
+	
+	protected void initStates() {
 		states.put(MATCH_ADDRESS_FIELD_STATE, new MatchAddressFieldState());
 		states.put(MATCH_CONTROL_FIELD_STATE, new MatchControlFieldState());
 		states.put(MATCH_PROTOCOL_FIELD_STATE, new MatchProtocolFieldState());
@@ -47,7 +58,7 @@ public class ParsingStateMachine implements IParsingStateMachine {
 
 		inputStream.mark(0);
 
-		this.context = new ParsingContext(new ParsingContextConfig(new EscapeDecoder(), new FcsCalculator(), 2, 2), inputStream);
+		this.context = new ParsingContext(new ParsingContextConfig(new EscapeDecoder(), protocol, fcs), inputStream);
 
 		this.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 

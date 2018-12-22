@@ -5,30 +5,40 @@ import static com.acme.rfc1662.IParsingStateMachine.State.READ_UNTIL_FIRST_MATCH
 
 import java.util.Arrays;
 
-import com.acme.rfc1662.IParsingStateMachine;
+import com.acme.rfc1662.IFCSByteArrayCalculator;
+import com.acme.rfc1662.IPacketInformation;
+import com.acme.rfc1662.IPacketInformationSerializer;
 import com.acme.rfc1662.IParsingContext;
+import com.acme.rfc1662.IParsingContextConfig;
 import com.acme.rfc1662.IParsingState;
+import com.acme.rfc1662.IParsingStateMachine;
+import com.acme.rfc1662.impl.PacketInformationSerializer;
 
 public class SeparateInformationFromChecksumState implements IParsingState {
 
+	private final IPacketInformationSerializer serializer = new PacketInformationSerializer();
+	
 	@Override
 	public void doAction(IParsingStateMachine machine, IParsingContext context) {
 
-		byte[] data = context.packetInformation().getCombinedData();
+		IPacketInformation packetInformation = context.packetInformation();
+		IParsingContextConfig config = context.config();
 
-		int fcsLength = context.config().fcsLengthInBytes();
+		byte[] data = packetInformation.getCombinedData();
+
+		int fcsLength = config.getProtocol().lengthInBytes();
 
 		if (data.length < fcsLength) {
 			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 			return;
 		}
 
-		context.packetInformation().setInformation(Arrays.copyOf(data, data.length - fcsLength));
+		packetInformation.setInformation(Arrays.copyOf(data, data.length - fcsLength));
 
 		byte[] checksum = Arrays.copyOfRange(data, data.length - fcsLength, data.length);
 
 		int expectedChecksum = byteToInt(checksum);
-		int calculatedChecksum = context.config().getFcsCalculator().calculate(context.packetInformation());
+		int calculatedChecksum = calculateChecksum(config, packetInformation);
 
 		if (expectedChecksum == calculatedChecksum) {
 			machine.setState(PARSE_VALID_MESSAGE_STATE);
@@ -36,6 +46,11 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 		}
 
+	}
+
+	private int calculateChecksum(IParsingContextConfig config, IPacketInformation packetInformation) {
+		IFCSByteArrayCalculator calculator = config.getFcs().calculator();
+		return calculator.calculate(serializer.convertPacketInformation(packetInformation));
 	}
 
 	// FIXME check endian in the RFC

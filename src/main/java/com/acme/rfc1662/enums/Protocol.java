@@ -2,7 +2,7 @@ package com.acme.rfc1662.enums;
 
 public enum Protocol {
 
-	DEFAULT(2);
+	ONE_OCTET(1), TWO_OCTET(2);
 	
 	int lengthInBytes;
 	
@@ -10,7 +10,7 @@ public enum Protocol {
 		this.lengthInBytes = lengthInBytes;
 	}
 	
-	int lengthInBytes() {
+	public int lengthInBytes() {
 		return lengthInBytes;
 	}
 	

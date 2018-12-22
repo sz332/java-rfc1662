@@ -16,7 +16,7 @@ public class MatchProtocolFieldState implements IParsingState{
 
 		ByteArrayInputStream is = context.inputStream();
 
-		if (context.config().protocolFieldLengthInBytes() == 1) {
+		if (context.config().getProtocol().lengthInBytes() == 1) {
 			readOneByte(machine, context, is);
 		} else {
 			readTwoBytes(machine, context, is);

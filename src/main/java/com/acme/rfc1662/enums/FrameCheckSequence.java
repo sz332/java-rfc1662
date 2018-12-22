@@ -13,9 +13,14 @@ public enum FrameCheckSequence {
 	
 	FrameCheckSequence(int lengthInBytes, IFCSByteArrayCalculator calculator){
 		this.lengthInBytes = lengthInBytes;
+		this.calculator = calculator;
 	}
 	
-	int lengthInBytes() {
+	public int lengthInBytes() {
 		return lengthInBytes;
+	}
+	
+	public IFCSByteArrayCalculator calculator() {
+		return calculator;
 	}
 }

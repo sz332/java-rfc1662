@@ -1,13 +1,15 @@
 package com.acme.rfc1662;
 
+import com.acme.rfc1662.enums.FrameCheckSequence;
+import com.acme.rfc1662.enums.Protocol;
+
 public interface IParsingContextConfig {
 
 	IEscapeDecoder getDecoder();
 
-	IFcsCalculator getFcsCalculator();
+	Protocol getProtocol();
+	
+	FrameCheckSequence getFcs();
 
-	int protocolFieldLengthInBytes();
-
-	int fcsLengthInBytes();
 
 }
