@@ -1,12 +1,12 @@
 package com.acme.rfc1662.impl;
 
-import com.acme.rfc1662.IFCSByteArrayCalculator;
+import com.acme.rfc1662.IFCSCalculator;
 
 /**
  * FCS calculator based on https://tools.ietf.org/html/rfc1662
  *
  */
-public class Fcs16Calculator implements IFCSByteArrayCalculator{
+public class FcsCalculator16Bit implements IFCSCalculator{
 
 	private static final int PPPINITFCS16 = 0xffff;
 

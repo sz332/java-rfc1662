@@ -5,7 +5,7 @@ import static com.acme.rfc1662.IParsingStateMachine.State.READ_UNTIL_FIRST_MATCH
 
 import java.util.Arrays;
 
-import com.acme.rfc1662.IFCSByteArrayCalculator;
+import com.acme.rfc1662.IFCSCalculator;
 import com.acme.rfc1662.IPacketInformation;
 import com.acme.rfc1662.IPacketInformationSerializer;
 import com.acme.rfc1662.IParsingContext;
@@ -49,7 +49,7 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 	}
 
 	private int calculateChecksum(IParsingContextConfig config, IPacketInformation packetInformation) {
-		IFCSByteArrayCalculator calculator = config.getFcs().calculator();
+		IFCSCalculator calculator = config.getFcs().calculator();
 		return calculator.calculate(serializer.convertPacketInformation(packetInformation));
 	}
 

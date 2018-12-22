@@ -1,6 +1,6 @@
 package com.acme.rfc1662;
 
-public interface IFCSByteArrayCalculator {
+public interface IFCSCalculator {
 
 	int calculate(byte[] data);
 	
