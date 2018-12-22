@@ -13,8 +13,8 @@ public class PPPEncoder implements IPPPEncoder {
 	private static final int ETX = 0x03;
 	private static final int FIELD_FLAG = 0x7E;
 	private static final int FIELD_ADDRESS = 0xFF;
-	private static final int CONTROL_ESCAPE = 0x7d;
-	private static final int FIELD_CONTROL = 0x3;
+	private static final int CONTROL_ESCAPE = 0x7D;
+	private static final int FIELD_CONTROL = 0x23;
 	private static final int XOR_VALUE = 0x20;
 
 	IPacketInformationSerializer serializer = new PacketInformationSerializer();
