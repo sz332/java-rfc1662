@@ -12,11 +12,11 @@ public class ParserResult {
 		this.messages = packets;
 	}
 
-	public List<byte[]> getMessages() {
+	public List<byte[]> messages() {
 		return messages;
 	}
 
-	public byte[] getRemaining() {
+	public byte[] remaining() {
 		return remaining;
 	}
 

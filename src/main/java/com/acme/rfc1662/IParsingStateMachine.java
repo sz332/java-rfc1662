@@ -1,6 +1,6 @@
 package com.acme.rfc1662;
 
-public interface IParseStateMachine {
+public interface IParsingStateMachine {
 
 	enum State {
 		MATCH_ADDRESS_FIELD_STATE,

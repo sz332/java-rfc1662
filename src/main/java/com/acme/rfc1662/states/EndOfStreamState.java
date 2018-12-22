@@ -1,13 +1,13 @@
 package com.acme.rfc1662.states;
 
-import com.acme.rfc1662.IParseStateMachine;
+import com.acme.rfc1662.IParsingStateMachine;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 
 public class EndOfStreamState implements IParsingState{
 
 	@Override
-	public void doAction(IParseStateMachine machine, IParsingContext context) {
+	public void doAction(IParsingStateMachine machine, IParsingContext context) {
 		context.inputStream().reset();
 
 		byte[] remaining = new byte[context.inputStream().available()];

@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import com.acme.rfc1662.IEscapeDecoder;
 import com.acme.rfc1662.IPacketInformation;
-import com.acme.rfc1662.IParseStateMachine;
-import com.acme.rfc1662.IParseStateMachine.State;
+import com.acme.rfc1662.IParsingStateMachine;
+import com.acme.rfc1662.IParsingStateMachine.State;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingContextConfig;
 
@@ -18,7 +18,7 @@ public class MatchProtocolFieldStateTest {
 
 	@Test
 	public void testOneByte() {
-		IParseStateMachine machine = mock(IParseStateMachine.class);
+		IParsingStateMachine machine = mock(IParsingStateMachine.class);
 		IParsingContext context = mock(IParsingContext.class);
 		IParsingContextConfig config = mock(IParsingContextConfig.class);
 		IPacketInformation packetInformation = mock(IPacketInformation.class);

@@ -16,104 +16,104 @@ public class DecodeTest {
 
 	@Test
 	public void testEmptyStream() {
-		ParserResult result = new PPPParser().parse(join(new int[0]));
+		ParserResult result = new PPPCodec().decode(join(new int[0]));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(0, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testStandardMessage() {
-		ParserResult result = new PPPParser().parse(join(MESSAGE_1));
+		ParserResult result = new PPPCodec().decode(join(MESSAGE_1));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(1, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testTwoCorrectMessages() {
 
-		ParserResult result = new PPPParser().parse(join(MESSAGE_1, MESSAGE_1));
+		ParserResult result = new PPPCodec().decode(join(MESSAGE_1, MESSAGE_1));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(2, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(2, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testTrashBeforeMessage() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
+		ParserResult result = new PPPCodec().decode(join(new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(1, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	// FIXME
 	@Test
 	public void testTrashAfterMessage() {
-		ParserResult result = new PPPParser().parse(join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));
+		ParserResult result = new PPPCodec().decode(join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(1, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	// FIXME
 	@Test
 	public void testTrashBeforeAfterMessage() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x04, 0x05, 0x06 }, MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));
+		ParserResult result = new PPPCodec().decode(join(new int[] { 0x04, 0x05, 0x06 }, MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(1, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testTrashBetweenMessages() {
-		ParserResult result = new PPPParser().parse(join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
+		ParserResult result = new PPPCodec().decode(join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(2, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(2, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testWrongAddress() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0x12, 0x03 }));
+		ParserResult result = new PPPCodec().decode(join(new int[] { 0x7E, 0x12, 0x03 }));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(0, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testWrongControl() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x04 }));
+		ParserResult result = new PPPCodec().decode(join(new int[] { 0x7E, 0xFF, 0x04 }));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(0, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testNoContentNoCRCButClosing() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x13, 0x7E }));
+		ParserResult result = new PPPCodec().decode(join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x13, 0x7E }));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(0, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	@Test
 	public void testNoContentNoCRCAndClosing() {
-		ParserResult result = new PPPParser().parse(join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x00, 0x00, 0x7E }));
+		ParserResult result = new PPPCodec().decode(join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x00, 0x00, 0x7E }));
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(0, result.getMessages().size());
-		Assert.assertEquals(0, result.getRemaining().length);
+		Assert.assertEquals(0, result.messages().size());
+		Assert.assertEquals(0, result.remaining().length);
 	}
 
 	
