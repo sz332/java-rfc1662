@@ -57,7 +57,12 @@ public class PPPEncoder implements IPPPEncoder {
 	}
 
 	private byte[] convertCrc(int crc, int lengthInBytes) {
-		return ByteBuffer.allocate(lengthInBytes).putInt(crc).array();
+		
+		if (lengthInBytes == 2) {
+			return ByteBuffer.allocate(lengthInBytes).putShort((short)crc).array();
+		} else {
+			return ByteBuffer.allocate(lengthInBytes).putInt(crc).array();
+		}
 	}
 
 	private byte[] escapeContent(byte[] content) {
