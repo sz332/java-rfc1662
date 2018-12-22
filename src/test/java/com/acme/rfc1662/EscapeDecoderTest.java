@@ -1,11 +1,10 @@
 package com.acme.rfc1662;
 
-import java.io.ByteArrayInputStream;
-
+import com.acme.rfc1662.impl.EscapeDecoder;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.acme.rfc1662.impl.EscapeDecoder;
+import java.io.ByteArrayInputStream;
 
 public class EscapeDecoderTest {
 

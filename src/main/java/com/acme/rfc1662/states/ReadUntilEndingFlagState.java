@@ -16,7 +16,7 @@ public class ReadUntilEndingFlagState implements IParsingState {
 	public void doAction(IParsingStateMachine machine, IParsingContext context) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		int data = -1;
+		int data;
 
 		do {
 			data = context.config().getDecoder().read(context.inputStream());

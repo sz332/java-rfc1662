@@ -54,7 +54,7 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 	}
 
 	// FIXME check endian in the RFC
-	public int byteToInt(byte[] data) {
+	private int byteToInt(byte[] data) {
 		int i = 0;
 		i |= data[1] & 0xFF;
 		i <<= 8;

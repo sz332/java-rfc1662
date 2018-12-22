@@ -1,10 +1,9 @@
 package com.acme.rfc1662;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.acme.rfc1662.enums.FrameCheckSequence;
 import com.acme.rfc1662.enums.Protocol;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class CustomProtocolTest {
 

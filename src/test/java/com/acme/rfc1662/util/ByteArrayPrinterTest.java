@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class ByteArrayPrinterTest {
 	
-	ByteArrayPrinter printer = new ByteArrayPrinter();
+	final ByteArrayPrinter printer = new ByteArrayPrinter();
 
 	@Test
 	public void testPrinterSingleByte() {

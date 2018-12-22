@@ -1,12 +1,11 @@
 package com.acme.rfc1662;
 
-import static com.acme.rfc1662.IntArray.join;
-
+import com.acme.rfc1662.enums.DefaultProtocol;
+import com.acme.rfc1662.enums.FrameCheckSequence;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.acme.rfc1662.enums.FrameCheckSequence;
-import com.acme.rfc1662.enums.DefaultProtocol;
+import static com.acme.rfc1662.IntArray.join;
 
 
 // http://www.netfor2.com/ppp.htm
@@ -18,7 +17,7 @@ public class DecodeTest {
 			0x7D, 0x26, 0x29, 0x23, 0xBE, 0x84, 0x7D, 0x27, 0x7D, 0x22, 0x7D, 0x28, 0x7D, 0x22, 0xDF, 0x7D, 0x30, 0x7E };
 
 	
-	PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
+	private PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
 	
 	@Test
 	public void testEmptyStream() {
@@ -67,7 +66,6 @@ public class DecodeTest {
 		Assert.assertEquals(0, result.remaining().length);
 	}
 
-	// FIXME
 	@Test
 	public void testTrashBeforeAfterMessage() {
 		ParserResult result = codec.decode(join(new int[] { 0x04, 0x05, 0x06 }, MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));

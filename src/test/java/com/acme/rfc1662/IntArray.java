@@ -9,17 +9,17 @@ public class IntArray {
 
 		int length = 0;
 
-		for (int i = 0; i < lists.length; i++) {
-			length += lists[i].length;
+		for (int[] list : lists) {
+			length += list.length;
 		}
 
 		int[] result = new int[length];
 
 		int position = 0;
 
-		for (int i = 0; i < lists.length; i++) {
-			System.arraycopy(lists[i], 0, result, position, lists[i].length);
-			position += lists[i].length;
+		for (int[] list : lists) {
+			System.arraycopy(list, 0, result, position, list.length);
+			position += list.length;
 		}
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();

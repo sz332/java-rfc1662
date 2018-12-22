@@ -13,7 +13,7 @@ public class ReadUntilFirstMatchingFlagState implements IParsingState {
 	@Override
 	public void doAction(IParsingStateMachine machine, IParsingContext context) {
 
-		int result = -1;
+		int result;
 
 		do {
 			context.inputStream().mark(0);

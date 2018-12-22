@@ -2,8 +2,8 @@ package com.acme.rfc1662.enums;
 
 public interface Protocol {
 
-	public int lengthInBytes();
+	int lengthInBytes();
 
-	public byte[] identifier();
+	byte[] identifier();
 	
 }

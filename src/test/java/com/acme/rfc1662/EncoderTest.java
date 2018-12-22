@@ -1,10 +1,9 @@
 package com.acme.rfc1662;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.acme.rfc1662.enums.DefaultProtocol;
 import com.acme.rfc1662.enums.FrameCheckSequence;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class EncoderTest {
 	
