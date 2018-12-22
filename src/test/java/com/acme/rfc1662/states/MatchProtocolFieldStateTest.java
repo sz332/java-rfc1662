@@ -1,12 +1,20 @@
 package com.acme.rfc1662.states;
 
-import com.acme.rfc1662.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.junit.Test;
+
+import com.acme.rfc1662.IEscapeDecoder;
+import com.acme.rfc1662.IPacketInformation;
+import com.acme.rfc1662.IParsingContext;
+import com.acme.rfc1662.IParsingContextConfig;
+import com.acme.rfc1662.IParsingStateMachine;
 import com.acme.rfc1662.IParsingStateMachine.State;
 import com.acme.rfc1662.enums.DefaultProtocol;
 import com.acme.rfc1662.enums.FrameCheckSequence;
-import org.junit.Test;
-
-import static org.mockito.Mockito.*;
 
 public class MatchProtocolFieldStateTest {
 
@@ -25,7 +33,7 @@ public class MatchProtocolFieldStateTest {
         when(context.config()).thenReturn(config);
         when(context.packetInformation()).thenReturn(packetInformation);
 
-        MatchProtocolFieldState state = new MatchProtocolFieldState();
+        MatchProtocolOneOctetFieldState state = new MatchProtocolOneOctetFieldState();
         state.doAction(machine, context);
 
         verify(packetInformation).setProtocol(new byte[]{5});
