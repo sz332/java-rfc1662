@@ -1,9 +1,10 @@
 package com.acme.rfc1662;
 
-import com.acme.rfc1662.enums.DefaultProtocol;
-import com.acme.rfc1662.enums.FrameCheckSequence;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.acme.rfc1662.enums.DefaultProtocol;
+import com.acme.rfc1662.enums.FrameCheckSequence;
 
 public class EncoderTest {
 	
@@ -59,6 +60,6 @@ public class EncoderTest {
 		
 		Assert.assertArrayEquals(new byte[] {0x7E, (byte)0xFF, (byte)0x7D, 0x23, 0x01, 0x02, 0x10, 0x11, 0x7D, 0x23,  0x12, (byte)0xAD, (byte)0x07, (byte)0x7E }, data );
 	}	
-
+	
 
 }

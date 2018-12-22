@@ -43,6 +43,7 @@ public class SeparateInformationFromChecksumState implements IParsingState {
 		if (expectedChecksum == calculatedChecksum) {
 			machine.setState(PARSE_VALID_MESSAGE_STATE);
 		} else {
+			System.err.println("Checksum mismatch, expected " + expectedChecksum + " calculated = " + calculatedChecksum);
 			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 		}
 

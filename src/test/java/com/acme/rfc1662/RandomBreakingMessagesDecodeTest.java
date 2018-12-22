@@ -2,6 +2,8 @@ package com.acme.rfc1662;
 
 import static com.acme.rfc1662.IntArray.join;
 
+import java.io.ByteArrayInputStream;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,14 +11,33 @@ import com.acme.rfc1662.enums.DefaultProtocol;
 import com.acme.rfc1662.enums.FrameCheckSequence;
 
 /**
- * This test file contains random messages which were able to break the decoder code
+ * This test file contains random messages which were able to break the decoder
+ * code
  *
  */
 public class RandomBreakingMessagesDecodeTest {
 
 	private PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
 
+	public void testEncodeDecode() {
+		byte[] message = codec.encode(new byte[] { (byte) 0x9a, (byte) 0x46 });
+
+		ParserResult result = codec.decode(new ByteArrayInputStream(message));
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1, result.messages().size());
+	}
+
 	@Test
+	public void testEncodeDecode2() {
+		byte[] message = codec.encode(new byte[] { (byte) 0x7E });
+
+		ParserResult result = codec.decode(new ByteArrayInputStream(message));
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1, result.messages().size());
+	}
+
 	public void testMessage1() {
 
 		ParserResult result = codec.decode(join(new int[] { 0x7B, 0x89, 0xAE, 0xEB, 0xAA, 0x83, 0xBE, 0x71, 0xF0, 0xB6, 0xA6, 0xDC, 0xED,
