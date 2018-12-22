@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.acme.rfc1662.enums.FrameCheckSequence;
-import com.acme.rfc1662.enums.Protocol;
+import com.acme.rfc1662.enums.DefaultProtocol;
 
 
 // http://www.netfor2.com/ppp.htm
@@ -18,7 +18,7 @@ public class DecodeTest {
 			0x7D, 0x26, 0x29, 0x23, 0xBE, 0x84, 0x7D, 0x27, 0x7D, 0x22, 0x7D, 0x28, 0x7D, 0x22, 0xDF, 0x7D, 0x30, 0x7E };
 
 	
-	PPPCodec codec = new PPPCodec(Protocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
+	PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
 	
 	@Test
 	public void testEmptyStream() {

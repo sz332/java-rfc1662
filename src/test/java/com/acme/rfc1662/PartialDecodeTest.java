@@ -4,13 +4,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.acme.rfc1662.enums.FrameCheckSequence;
-import com.acme.rfc1662.enums.Protocol;
+import com.acme.rfc1662.enums.DefaultProtocol;
 
 import static com.acme.rfc1662.IntArray.join;
 
 public class PartialDecodeTest {
 
-	PPPCodec codec = new PPPCodec(Protocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
+	PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
 	
 	@Test
 	public void testPartialHeaderArrived() {
