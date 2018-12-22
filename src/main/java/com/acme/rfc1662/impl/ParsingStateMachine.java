@@ -17,7 +17,6 @@ import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 import com.acme.rfc1662.IParsingStateMachine;
 import com.acme.rfc1662.ParserResult;
-import com.acme.rfc1662.IParsingStateMachine.State;
 import com.acme.rfc1662.states.EndOfStreamState;
 import com.acme.rfc1662.states.MatchAddressFieldState;
 import com.acme.rfc1662.states.MatchControlFieldState;
