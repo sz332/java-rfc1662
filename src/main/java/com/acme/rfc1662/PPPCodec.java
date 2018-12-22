@@ -22,9 +22,9 @@ public class PPPCodec {
 		return sm.parse(is);
 	}
 
-	public byte[] encode(ByteArrayInputStream is) {
+	public byte[] encode(byte[] content) {
 		PPPEncoder encoder = new PPPEncoder(protocol, fcs);
-		return encoder.encode(is);
+		return encoder.encode(content);
 	}
 
 }
