@@ -1,7 +1,5 @@
 package com.acme.rfc1662.states;
 
-import java.io.ByteArrayInputStream;
-
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 import com.acme.rfc1662.IParsingStateMachine;
@@ -12,14 +10,12 @@ public class MatchProtocolTwoOctetFieldState implements IParsingState {
 	@Override
 	public void doAction(IParsingStateMachine machine, IParsingContext context) {
 
-		ByteArrayInputStream is = context.inputStream();
-
-		int first = context.config().getDecoder().read(is);
-		int second = context.config().getDecoder().read(is);
+		int first = context.packetInformation().getMessageAsStream().read();
+		int second = context.packetInformation().getMessageAsStream().read();
 		
 		context.packetInformation().setProtocol(new byte[] { (byte) first, (byte) second });
 
-		machine.setState(State.READ_UNTIL_END_FLAG_STATE);
+		machine.setState(State.PARSE_VALID_MESSAGE_STATE);
 	}
 
 }

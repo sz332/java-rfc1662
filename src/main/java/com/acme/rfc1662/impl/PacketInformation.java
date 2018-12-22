@@ -1,36 +1,15 @@
 package com.acme.rfc1662.impl;
 
+import java.io.ByteArrayInputStream;
+
 import com.acme.rfc1662.IPacketInformation;
 
 public class PacketInformation implements IPacketInformation {
 
-	int address;
-	int control;
 	byte[] protocol;
 	byte[] information;
-	int fcs;
 
-	byte[] combinedData;
-
-	@Override
-	public int getAddress() {
-		return address;
-	}
-
-	@Override
-	public void setAddress(int address) {
-		this.address = address;
-	}
-
-	@Override
-	public int getControl() {
-		return control;
-	}
-
-	@Override
-	public void setControl(int control) {
-		this.control = control;
-	}
+	ByteArrayInputStream message;
 
 	@Override
 	public byte[] getProtocol() {
@@ -49,16 +28,17 @@ public class PacketInformation implements IPacketInformation {
 
 	@Override
 	public void setInformation(byte[] information) {
-		this.information = information;	}
+		this.information = information;
+	}
 
 	@Override
-	public byte[] getCombinedData() {
-		return combinedData;
+	public ByteArrayInputStream getMessageAsStream() {
+		return message;
 	}
-	
+
 	@Override
-	public void setCombinedData(byte[] data) {
-		this.combinedData = data;
+	public void setMessageAsStream(ByteArrayInputStream message) {
+		this.message = message;
 	}
-	
+
 }

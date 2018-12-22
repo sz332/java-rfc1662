@@ -13,11 +13,9 @@ public class MatchControlFieldState implements IParsingState {
 	private static final int FIELD_CONTROL = 0x3;
 
 	public void doAction(IParsingStateMachine machine, IParsingContext context) {
-		int data = context.config().getDecoder().read(context.inputStream());
+		int data = context.packetInformation().getMessageAsStream().read();
 
-		if (data == FIELD_CONTROL) {
-			context.packetInformation().setControl(FIELD_CONTROL);
-			
+		if (data == FIELD_CONTROL) {			
 			if (context.config().getProtocol().lengthInBytes() == 1) {
 				machine.setState(MATCH_PROTOCOL_ONE_OCTET_FIELD_STATE);
 			} else {

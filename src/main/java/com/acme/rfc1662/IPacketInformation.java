@@ -1,14 +1,8 @@
 package com.acme.rfc1662;
 
+import java.io.ByteArrayInputStream;
+
 public interface IPacketInformation {
-
-	int getAddress();
-
-	void setAddress(int address);
-
-	int getControl();
-
-	void setControl(int control);
 
 	byte[] getProtocol();
 
@@ -18,8 +12,12 @@ public interface IPacketInformation {
 
 	void setInformation(byte[] information);
 
-	void setCombinedData(byte[] data);
-	
-	byte[] getCombinedData();
+	/**
+	 * The whole message between the two flags
+	 * @param data
+	 */
+	void setMessageAsStream(ByteArrayInputStream message);
+
+	ByteArrayInputStream getMessageAsStream();
 
 }

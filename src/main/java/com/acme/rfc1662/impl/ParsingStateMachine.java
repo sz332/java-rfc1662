@@ -8,7 +8,8 @@ import static com.acme.rfc1662.IParsingStateMachine.State.MATCH_PROTOCOL_TWO_OCT
 import static com.acme.rfc1662.IParsingStateMachine.State.PARSE_VALID_MESSAGE_STATE;
 import static com.acme.rfc1662.IParsingStateMachine.State.READ_UNTIL_END_FLAG_STATE;
 import static com.acme.rfc1662.IParsingStateMachine.State.READ_UNTIL_FIRST_MATCHING_FLAG_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.SEPARATE_INFORMATION_FROM_CHECKSUM_STATE;
+import static com.acme.rfc1662.IParsingStateMachine.State.UNESCAPE_STATE;
+import static com.acme.rfc1662.IParsingStateMachine.State.VALIDATE_CHECKSUM_STATE;
 
 import java.io.ByteArrayInputStream;
 import java.util.EnumMap;
@@ -28,7 +29,8 @@ import com.acme.rfc1662.states.MatchProtocolTwoOctetFieldState;
 import com.acme.rfc1662.states.ParseValidMessageState;
 import com.acme.rfc1662.states.ReadUntilEndingFlagState;
 import com.acme.rfc1662.states.ReadUntilFirstMatchingFlagState;
-import com.acme.rfc1662.states.SeparateInformationFromChecksumState;
+import com.acme.rfc1662.states.UnescapeState;
+import com.acme.rfc1662.states.ValidateChecksumState;
 
 public class ParsingStateMachine implements IParsingStateMachine {
 
@@ -46,14 +48,15 @@ public class ParsingStateMachine implements IParsingStateMachine {
 	}
 	
 	protected void initStates() {
+		states.put(READ_UNTIL_FIRST_MATCHING_FLAG_STATE, new ReadUntilFirstMatchingFlagState());
+		states.put(READ_UNTIL_END_FLAG_STATE, new ReadUntilEndingFlagState());
+		states.put(UNESCAPE_STATE, new UnescapeState());
+		states.put(VALIDATE_CHECKSUM_STATE, new ValidateChecksumState());
 		states.put(MATCH_ADDRESS_FIELD_STATE, new MatchAddressFieldState());
 		states.put(MATCH_CONTROL_FIELD_STATE, new MatchControlFieldState());
 		states.put(MATCH_PROTOCOL_ONE_OCTET_FIELD_STATE, new MatchProtocolOneOctetFieldState());
 		states.put(MATCH_PROTOCOL_TWO_OCTET_FIELD_STATE, new MatchProtocolTwoOctetFieldState());		
 		states.put(PARSE_VALID_MESSAGE_STATE, new ParseValidMessageState());
-		states.put(READ_UNTIL_END_FLAG_STATE, new ReadUntilEndingFlagState());
-		states.put(READ_UNTIL_FIRST_MATCHING_FLAG_STATE, new ReadUntilFirstMatchingFlagState());
-		states.put(SEPARATE_INFORMATION_FROM_CHECKSUM_STATE, new SeparateInformationFromChecksumState());
 		states.put(END_OF_STREAM_STATE, new EndOfStreamState());
 	}
 
@@ -61,7 +64,7 @@ public class ParsingStateMachine implements IParsingStateMachine {
 
 		inputStream.mark(0);
 
-		this.context = new ParsingContext(new ParsingContextConfig(new EscapeDecoder(), protocol, fcs), inputStream);
+		this.context = new ParsingContext(new ParsingContextConfig(new ByteArrayInputStreamReader(), protocol, fcs), inputStream);
 
 		this.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 

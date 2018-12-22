@@ -15,9 +15,9 @@ import com.acme.rfc1662.util.ByteArrayPrinter;
 public class RandomDecodingTest {
 
 	private static final int ITERATIONS = 100;
-	private static final int MAX_LENGTH_OF_RANDOM_DATA = 200;
-	private static final int MAX_CORRECT_MESSAGES_COUNT = 5;
-	private static final int MAX_LENGTH_OF_CORRECT_MESSAGE = 5;
+	private static final int MAX_LENGTH_OF_RANDOM_DATA = 100;
+	private static final int MAX_CORRECT_MESSAGES_COUNT = 10;
+	private static final int MAX_LENGTH_OF_CORRECT_MESSAGE = 300;
 
 	ByteArrayPrinter printer = new ByteArrayPrinter();
 	PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
@@ -41,9 +41,8 @@ public class RandomDecodingTest {
 
 				
 				for (int j = 0; j < correctMessageCount; j++) {
-					byte[] data = new byte[random.nextInt(MAX_LENGTH_OF_RANDOM_DATA)];
-					random.nextBytes(data);
 
+					byte[] data = createRandomData(random, random.nextInt(MAX_LENGTH_OF_RANDOM_DATA));
 					bos.write(data);
 
 					data = createMessage(random);
@@ -51,9 +50,7 @@ public class RandomDecodingTest {
 					
 					bos.write(data);
 
-					data = new byte[random.nextInt(MAX_LENGTH_OF_RANDOM_DATA)];
-					random.nextBytes(data);
-
+					data = createRandomData(random, random.nextInt(MAX_LENGTH_OF_RANDOM_DATA));
 					bos.write(data);
 				}
 
@@ -70,16 +67,31 @@ public class RandomDecodingTest {
 			}
 		}
 	}
+	
+	byte[] createRandomData(Random random, int length) {
+		byte[] data = new byte[length];
+		random.nextBytes(data);
+		
+		for (int i=0;i<data.length;i++) {
+			if (data[i] == 0x7E) {
+				data[i] = 0x6E;
+			}
+		}
+
+		return data;
+	}
 
 	private byte[] createMessage(Random random) {
 
-		int contentLength = random.nextInt(MAX_LENGTH_OF_CORRECT_MESSAGE);
+		int contentLength = 1 + random.nextInt(MAX_LENGTH_OF_CORRECT_MESSAGE);
 		
 		System.out.println("Creating message of content length = " + contentLength);
 		
 		byte[] info = new byte[contentLength];
 		random.nextBytes(info);
 
+		System.out.println("Message content was = " + printer.printAsHex(info, 1));
+		
 		return codec.encode(info);
 	}
 

@@ -2,8 +2,8 @@ package com.acme.rfc1662;
 
 import java.io.ByteArrayInputStream;
 
-public interface IEscapeDecoder {
-
+public interface IByteArrayInputStreamReader {
+	
 	int read(ByteArrayInputStream inputStream);
 
 }

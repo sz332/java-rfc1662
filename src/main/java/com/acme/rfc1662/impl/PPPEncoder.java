@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import com.acme.rfc1662.IPPPEncoder;
-import com.acme.rfc1662.IPacketInformationSerializer;
 import com.acme.rfc1662.enums.FrameCheckSequence;
 import com.acme.rfc1662.enums.Protocol;
 
@@ -18,8 +17,6 @@ public class PPPEncoder implements IPPPEncoder {
 	private static final int FIELD_CONTROL = 0x03;
 	private static final int XOR_VALUE = 0x20;
 
-	IPacketInformationSerializer serializer = new PacketInformationSerializer();
-
 	Protocol protocol;
 	FrameCheckSequence fcs;
 
@@ -31,13 +28,7 @@ public class PPPEncoder implements IPPPEncoder {
 	@Override
 	public byte[] encode(byte[] content) {
 
-		PacketInformation packetInformation = new PacketInformation();
-		packetInformation.setAddress(FIELD_ADDRESS);
-		packetInformation.setControl(FIELD_CONTROL);
-		packetInformation.setProtocol(protocol.identifier());
-		packetInformation.setInformation(content);
-
-		int crc = fcs.calculator().calculate(serializer.convertPacketInformation(packetInformation));
+		int crc = fcs.calculator().calculate(calculateFullMessage(FIELD_ADDRESS, FIELD_CONTROL, protocol.identifier(), content, new byte[0]));
 		byte[] crcArray = convertCrc(crc, fcs.lengthInBytes());
 	
 		byte[] escaped = escape(calculateFullMessage(FIELD_ADDRESS, FIELD_CONTROL, protocol.identifier(), content, crcArray));

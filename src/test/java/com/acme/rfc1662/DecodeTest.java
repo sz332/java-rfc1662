@@ -90,7 +90,7 @@ public class DecodeTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(0, result.messages().size());
-		Assert.assertEquals(0, result.remaining().length);
+		Assert.assertEquals(3, result.remaining().length);
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class DecodeTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(0, result.messages().size());
-		Assert.assertEquals(0, result.remaining().length);
+		Assert.assertEquals(3, result.remaining().length);
 	}
 
 	@Test

@@ -10,6 +10,9 @@ public class ParseValidMessageState implements IParsingState{
 
 	@Override
 	public void doAction(IParsingStateMachine machine, IParsingContext context) {
+		
+		
+		
 		context.result().addMessage(context.packetInformation().getInformation());
 		machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
 	}

@@ -13,10 +13,9 @@ public class MatchAddressFieldState implements IParsingState {
 
 	public void doAction(IParsingStateMachine machine, IParsingContext context) {
 
-		int data = context.config().getDecoder().read(context.inputStream());
+		int data = context.packetInformation().getMessageAsStream().read();
 
 		if (data == FIELD_ADDRESS) {
-			context.packetInformation().setAddress(FIELD_ADDRESS);
 			machine.setState(MATCH_CONTROL_FIELD_STATE);
 		} else {
 			machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
