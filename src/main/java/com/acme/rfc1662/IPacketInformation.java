@@ -4,20 +4,21 @@ import java.io.ByteArrayInputStream;
 
 public interface IPacketInformation {
 
-	byte[] getProtocol();
+    byte[] getProtocol();
 
-	void setProtocol(byte[] protocol);
+    void setProtocol(byte[] protocol);
 
-	byte[] getInformation();
+    byte[] getInformation();
 
-	void setInformation(byte[] information);
+    void setInformation(byte[] information);
 
-	/**
-	 * The whole message between the two flags
-	 * @param data
-	 */
-	void setMessageAsStream(ByteArrayInputStream message);
+    /**
+     * The whole message between the two flags
+     * 
+     * @param data
+     */
+    void setMessageAsStream(ByteArrayInputStream message);
 
-	ByteArrayInputStream getMessageAsStream();
+    ByteArrayInputStream getMessageAsStream();
 
 }

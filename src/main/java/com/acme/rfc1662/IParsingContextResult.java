@@ -4,9 +4,11 @@ import java.util.List;
 
 public interface IParsingContextResult {
 
-	void addMessage(byte[] data);
-	List<byte[]> getMessages();
-	
-	void setRemaining(byte[] data);
-	byte[] getRemaining();
+    void addMessage(byte[] data);
+
+    List<byte[]> getMessages();
+
+    void setRemaining(byte[] data);
+
+    byte[] getRemaining();
 }

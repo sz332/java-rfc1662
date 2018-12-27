@@ -5,11 +5,10 @@ import com.acme.rfc1662.enums.Protocol;
 
 public interface IParsingContextConfig {
 
-	IByteArrayInputStreamReader getReader();
-	
-	Protocol getProtocol();
-	
-	FrameCheckSequence getFcs();
+    IByteArrayInputStreamReader getReader();
 
+    Protocol getProtocol();
+
+    FrameCheckSequence getFcs();
 
 }

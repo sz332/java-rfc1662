@@ -7,29 +7,30 @@ import com.acme.rfc1662.enums.Protocol;
 
 public class ParsingContextConfig implements IParsingContextConfig {
 
-	private final IByteArrayInputStreamReader reader;
-	private final Protocol protocol;
-	private final FrameCheckSequence fcs;
+    private final IByteArrayInputStreamReader reader;
+    private final Protocol protocol;
+    private final FrameCheckSequence fcs;
 
-	public ParsingContextConfig(IByteArrayInputStreamReader reader, Protocol protocol, FrameCheckSequence fcs) {
-		this.reader = reader;
-		this.protocol = protocol;
-		this.fcs = fcs;
-	}
+    public ParsingContextConfig(final IByteArrayInputStreamReader reader, final Protocol protocol,
+            final FrameCheckSequence fcs) {
+        this.reader = reader;
+        this.protocol = protocol;
+        this.fcs = fcs;
+    }
 
-	@Override
-	public IByteArrayInputStreamReader getReader() {
-		return reader;
-	}
+    @Override
+    public IByteArrayInputStreamReader getReader() {
+        return reader;
+    }
 
-	@Override
-	public Protocol getProtocol() {
-		return protocol;
-	}
+    @Override
+    public Protocol getProtocol() {
+        return protocol;
+    }
 
-	@Override
-	public FrameCheckSequence getFcs() {
-		return fcs;
-	}
+    @Override
+    public FrameCheckSequence getFcs() {
+        return fcs;
+    }
 
 }

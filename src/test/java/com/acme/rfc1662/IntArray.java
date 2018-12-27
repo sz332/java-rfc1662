@@ -5,30 +5,30 @@ import java.io.ByteArrayOutputStream;
 
 public class IntArray {
 
-	public static ByteArrayInputStream join(int[]... lists) {
+    public ByteArrayInputStream join(final int[]... lists) {
 
-		int length = 0;
+        int length = 0;
 
-		for (int[] list : lists) {
-			length += list.length;
-		}
+        for (final int[] list : lists) {
+            length += list.length;
+        }
 
-		int[] result = new int[length];
+        final int[] result = new int[length];
 
-		int position = 0;
+        int position = 0;
 
-		for (int[] list : lists) {
-			System.arraycopy(list, 0, result, position, list.length);
-			position += list.length;
-		}
+        for (final int[] list : lists) {
+            System.arraycopy(list, 0, result, position, list.length);
+            position += list.length;
+        }
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		for (int i : result) {
-			bos.write(i);
-		}
+        for (final int i : result) {
+            bos.write(i);
+        }
 
-		return new ByteArrayInputStream(bos.toByteArray());
-	}
+        return new ByteArrayInputStream(bos.toByteArray());
+    }
 
 }

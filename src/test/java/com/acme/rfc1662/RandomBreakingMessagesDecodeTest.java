@@ -1,7 +1,5 @@
 package com.acme.rfc1662;
 
-import static com.acme.rfc1662.IntArray.join;
-
 import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
@@ -17,27 +15,27 @@ import com.acme.rfc1662.enums.FrameCheckSequence;
  */
 public class RandomBreakingMessagesDecodeTest {
 
-	private PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
+    private final PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
 
-	@Test
-	public void testEncodeDecode() {
-		byte[] message = codec.encode(new byte[] { (byte) 0x9a, (byte) 0x46 });
+    @Test
+    public void testEncodeDecode() {
+        final byte[] message = codec.encode(new byte[] { (byte) 0x9a, (byte) 0x46 });
 
-		ParserResult result = codec.decode(new ByteArrayInputStream(message));
+        final ParserResult result = codec.decode(new ByteArrayInputStream(message));
 
-		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.messages().size());
-	}
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.messages().size());
+    }
 
-	@Test
-	public void testEncodeDecode2() {
-		byte[] message = codec.encode(new byte[] { (byte) 0x7E });
+    @Test
+    public void testEncodeDecode2() {
+        final byte[] message = codec.encode(new byte[] { (byte) 0x7E });
 
-		ParserResult result = codec.decode(new ByteArrayInputStream(message));
+        final ParserResult result = codec.decode(new ByteArrayInputStream(message));
 
-		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.messages().size());
-	}
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.messages().size());
+    }
 
 //	@Test
 //	public void testEncodeDecode3() {

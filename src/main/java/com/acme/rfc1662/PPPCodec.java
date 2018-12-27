@@ -12,18 +12,18 @@ public class PPPCodec {
     Protocol protocol;
     FrameCheckSequence fcs;
 
-    public PPPCodec(Protocol protocol, FrameCheckSequence fcs) {
+    public PPPCodec(final Protocol protocol, final FrameCheckSequence fcs) {
         this.protocol = protocol;
         this.fcs = fcs;
     }
 
-    public ParserResult decode(ByteArrayInputStream is) {
-        ParsingStateMachine sm = new ParsingStateMachine(protocol, fcs);
+    public ParserResult decode(final ByteArrayInputStream is) {
+        final ParsingStateMachine sm = new ParsingStateMachine(protocol, fcs);
         return sm.parse(is);
     }
 
-    public byte[] encode(byte[] content) {
-        PPPEncoder encoder = new PPPEncoder(protocol, fcs);
+    public byte[] encode(final byte[] content) {
+        final PPPEncoder encoder = new PPPEncoder(protocol, fcs);
         return encoder.encode(content);
     }
 

@@ -7,25 +7,27 @@ import com.acme.rfc1662.IParsingContextResult;
 
 public class ParsingContextResult implements IParsingContextResult {
 
-	private List<byte[]> messages = new ArrayList<>();
-	private byte[] remaining = new byte[0];
+    private final List<byte[]> messages = new ArrayList<>();
+    private byte[] remaining = new byte[0];
 
-	@Override
-	public void addMessage(byte[] data) {
-		messages.add(data);
-	}
+    @Override
+    public void addMessage(final byte[] data) {
+        messages.add(data);
+    }
 
-	@Override
-	public List<byte[]> getMessages() {
-		return messages;
-	}
+    @Override
+    public List<byte[]> getMessages() {
+        return messages;
+    }
 
-	public void setRemaining(byte[] remaining) {
-		this.remaining = remaining;
-	}
+    @Override
+    public void setRemaining(final byte[] remaining) {
+        this.remaining = remaining == null ? null : remaining.clone();
+    }
 
-	public byte[] getRemaining() {
-		return remaining;
-	}
+    @Override
+    public byte[] getRemaining() {
+        return remaining;
+    }
 
 }

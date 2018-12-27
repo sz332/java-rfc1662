@@ -4,10 +4,12 @@ import java.io.ByteArrayInputStream;
 
 public interface IParsingContext {
 
-	ByteArrayInputStream inputStream();
+    ByteArrayInputStream inputStream();
 
-	IParsingContextConfig config();
-	IParsingContextResult result();
-	IPacketInformation packetInformation();
+    IParsingContextConfig config();
+
+    IParsingContextResult result();
+
+    IPacketInformation packetInformation();
 
 }

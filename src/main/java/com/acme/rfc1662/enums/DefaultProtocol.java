@@ -1,23 +1,25 @@
 package com.acme.rfc1662.enums;
 
-public enum DefaultProtocol implements Protocol{
+public enum DefaultProtocol implements Protocol {
 
-	ONE_OCTET(1, new byte[] { 0x01 }), TWO_OCTET(2, new byte[] { 0x01, 0x02 });
+    ONE_OCTET(1, new byte[] { 0x01 }), TWO_OCTET(2, new byte[] { 0x01, 0x02 });
 
-	byte[] identifier;
-	int lengthInBytes;
+    byte[] identifier;
+    int lengthInBytes;
 
-	DefaultProtocol(int lengthInBytes, byte[] identifier) {
-		this.lengthInBytes = lengthInBytes;
-		this.identifier = identifier;
-	}
+    DefaultProtocol(final int lengthInBytes, final byte[] identifier) {
+        this.lengthInBytes = lengthInBytes;
+        this.identifier = identifier == null ? null : identifier.clone();
+    }
 
-	public int lengthInBytes() {
-		return lengthInBytes;
-	}
+    @Override
+    public int lengthInBytes() {
+        return lengthInBytes;
+    }
 
-	public byte[] identifier() {
-		return identifier;
-	}
+    @Override
+    public byte[] identifier() {
+        return (identifier == null) ? null : identifier.clone();
+    }
 
 }

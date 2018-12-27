@@ -11,28 +11,28 @@ import com.acme.rfc1662.IParsingStateMachine;
 
 public class ReadUntilEndingFlagState implements IParsingState {
 
-	private static final int FIELD_FLAG = 0x7E;
+    private static final int FIELD_FLAG = 0x7E;
 
-	@Override
-	public void doAction(IParsingStateMachine machine, IParsingContext context) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    @Override
+    public void doAction(final IParsingStateMachine machine, final IParsingContext context) {
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		int data;
+        int data;
 
-		do {
-			data = context.config().getReader().read(context.inputStream());
+        do {
+            data = context.config().getReader().read(context.inputStream());
 
-			if (data != FIELD_FLAG) {
-				bos.write(data);
-			}
+            if (data != FIELD_FLAG) {
+                bos.write(data);
+            }
 
-		} while (data != FIELD_FLAG);
+        } while (data != FIELD_FLAG);
 
-		context.inputStream().mark(0);
+        context.inputStream().mark(0);
 
-		context.packetInformation().setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
+        context.packetInformation().setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
 
-		machine.setState(UNESCAPE_STATE);
-	}
+        machine.setState(UNESCAPE_STATE, context);
+    }
 
 }

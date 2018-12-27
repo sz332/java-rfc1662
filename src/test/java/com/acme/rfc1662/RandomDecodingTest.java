@@ -7,6 +7,8 @@ import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.acme.rfc1662.enums.DefaultProtocol;
 import com.acme.rfc1662.enums.FrameCheckSequence;
@@ -14,85 +16,84 @@ import com.acme.rfc1662.util.ByteArrayPrinter;
 
 public class RandomDecodingTest {
 
-	private static final int ITERATIONS = 100;
-	private static final int MAX_LENGTH_OF_RANDOM_DATA = 100;
-	private static final int MAX_CORRECT_MESSAGES_COUNT = 10;
-	private static final int MAX_LENGTH_OF_CORRECT_MESSAGE = 300;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RandomDecodingTest.class);
 
-	ByteArrayPrinter printer = new ByteArrayPrinter();
-	PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
+    private static final int ITERATIONS = 100;
+    private static final int MAX_LENGTH_OF_RANDOM_DATA = 100;
+    private static final int MAX_CORRECT_MESSAGES_COUNT = 10;
+    private static final int MAX_LENGTH_OF_CORRECT_MESSAGE = 300;
 
-	@Test
-	public void testDecodingWithRandomData() {
+    ByteArrayPrinter printer = new ByteArrayPrinter();
+    PPPCodec codec = new PPPCodec(DefaultProtocol.TWO_OCTET, FrameCheckSequence.TWO_OCTET);
 
-		Random random = new Random();
+    @Test
+    public void testDecodingWithRandomData() {
 
-		for (int i = 0; i < ITERATIONS; i++) {
-			
-			System.out.println("Working on iteration " + i);
+        final Random random = new Random();
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        for (int i = 0; i < ITERATIONS; i++) {
 
-			try {
+            LOGGER.info("Working on iteration {}", i);
 
-				int correctMessageCount = random.nextInt(MAX_CORRECT_MESSAGES_COUNT);
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-				System.out.println("Working on iteration " + i);
+            try {
 
-				
-				for (int j = 0; j < correctMessageCount; j++) {
+                final int correctMessageCount = random.nextInt(MAX_CORRECT_MESSAGES_COUNT);
 
-					byte[] data = createRandomData(random, random.nextInt(MAX_LENGTH_OF_RANDOM_DATA));
-					bos.write(data);
+                for (int j = 0; j < correctMessageCount; j++) {
 
-					data = createMessage(random);
-					System.out.println("message = " + printer.printAsHex(data, 1));
-					
-					bos.write(data);
+                    byte[] data = createRandomData(random, random.nextInt(MAX_LENGTH_OF_RANDOM_DATA));
+                    bos.write(data);
 
-					data = createRandomData(random, random.nextInt(MAX_LENGTH_OF_RANDOM_DATA));
-					bos.write(data);
-				}
+                    data = createMessage(random);
+                    LOGGER.info("message = {}", printer.printAsHex(data, 1));
 
-				byte[] dataToDecode = bos.toByteArray();
-				
-				System.out.println("stream = " + printer.printAsHex(dataToDecode, 1));
-				
-				ParserResult result = codec.decode(new ByteArrayInputStream(dataToDecode));
+                    bos.write(data);
 
-				Assert.assertEquals(correctMessageCount, result.messages().size());
+                    data = createRandomData(random, random.nextInt(MAX_LENGTH_OF_RANDOM_DATA));
+                    bos.write(data);
+                }
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	byte[] createRandomData(Random random, int length) {
-		byte[] data = new byte[length];
-		random.nextBytes(data);
-		
-		for (int i=0;i<data.length;i++) {
-			if (data[i] == 0x7E) {
-				data[i] = 0x6E;
-			}
-		}
+                final byte[] dataToDecode = bos.toByteArray();
 
-		return data;
-	}
+                LOGGER.info("stream = {}", printer.printAsHex(dataToDecode, 1));
 
-	private byte[] createMessage(Random random) {
+                final ParserResult result = codec.decode(new ByteArrayInputStream(dataToDecode));
 
-		int contentLength = 1 + random.nextInt(MAX_LENGTH_OF_CORRECT_MESSAGE);
-		
-		System.out.println("Creating message of content length = " + contentLength);
-		
-		byte[] info = new byte[contentLength];
-		random.nextBytes(info);
+                Assert.assertEquals(correctMessageCount, result.messages().size());
 
-		System.out.println("Message content was = " + printer.printAsHex(info, 1));
-		
-		return codec.encode(info);
-	}
+            } catch (final IOException e) {
+                LOGGER.error("IOException occured", e);
+            }
+        }
+    }
+
+    byte[] createRandomData(final Random random, final int length) {
+        final byte[] data = new byte[length];
+        random.nextBytes(data);
+
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] == 0x7E) {
+                data[i] = 0x6E;
+            }
+        }
+
+        return data;
+    }
+
+    private byte[] createMessage(final Random random) {
+
+        final int contentLength = 1 + random.nextInt(MAX_LENGTH_OF_CORRECT_MESSAGE);
+
+        LOGGER.info("Creating message of content length = {}", contentLength);
+
+        final byte[] info = new byte[contentLength];
+        random.nextBytes(info);
+
+        LOGGER.info("Message content was = {}", printer.printAsHex(info, 1));
+
+        return codec.encode(info);
+    }
 
 }

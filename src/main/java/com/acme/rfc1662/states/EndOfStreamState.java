@@ -4,16 +4,16 @@ import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 import com.acme.rfc1662.IParsingStateMachine;
 
-public class EndOfStreamState implements IParsingState{
+public class EndOfStreamState implements IParsingState {
 
-	@Override
-	public void doAction(IParsingStateMachine machine, IParsingContext context) {
-		context.inputStream().reset();
+    @Override
+    public void doAction(final IParsingStateMachine machine, final IParsingContext context) {
+        context.inputStream().reset();
 
-		byte[] remaining = new byte[context.inputStream().available()];
-		context.inputStream().read(remaining, 0, remaining.length);
+        final byte[] remaining = new byte[context.inputStream().available()];
+        context.inputStream().read(remaining, 0, remaining.length);
 
-		context.result().setRemaining(remaining);
-	}
+        context.result().setRemaining(remaining);
+    }
 
 }

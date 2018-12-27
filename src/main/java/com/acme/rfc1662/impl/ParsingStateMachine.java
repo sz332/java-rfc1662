@@ -1,16 +1,5 @@
 package com.acme.rfc1662.impl;
 
-import static com.acme.rfc1662.IParsingStateMachine.State.END_OF_STREAM_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.MATCH_ADDRESS_FIELD_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.MATCH_CONTROL_FIELD_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.MATCH_PROTOCOL_ONE_OCTET_FIELD_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.MATCH_PROTOCOL_TWO_OCTET_FIELD_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.PARSE_VALID_MESSAGE_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.READ_UNTIL_END_FLAG_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.READ_UNTIL_FIRST_MATCHING_FLAG_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.UNESCAPE_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.VALIDATE_CHECKSUM_STATE;
-
 import java.io.ByteArrayInputStream;
 import java.util.EnumMap;
 
@@ -32,53 +21,56 @@ import com.acme.rfc1662.states.ReadUntilFirstMatchingFlagState;
 import com.acme.rfc1662.states.UnescapeState;
 import com.acme.rfc1662.states.ValidateChecksumState;
 
-public class ParsingStateMachine implements IParsingStateMachine {
+public final class ParsingStateMachine implements IParsingStateMachine {
 
-	IParsingContext context;
+    final EnumMap<State, IParsingState> states;
+    final Protocol protocol;
+    final FrameCheckSequence fcs;
+    
+    public ParsingStateMachine(final Protocol protocol, final FrameCheckSequence fcs) {
+        this.protocol = protocol;
+        this.fcs = fcs;
+        this.states = new EnumMap<>(State.class);
+    }
 
-	EnumMap<State, IParsingState> states = new EnumMap<>(State.class);
+    private void initStates() {
+        states.put(State.READ_UNTIL_FIRST_MATCHING_FLAG_STATE, new ReadUntilFirstMatchingFlagState());
+        states.put(State.READ_UNTIL_END_FLAG_STATE, new ReadUntilEndingFlagState());
+        states.put(State.UNESCAPE_STATE, new UnescapeState());
+        states.put(State.VALIDATE_CHECKSUM_STATE, new ValidateChecksumState());
+        states.put(State.MATCH_ADDRESS_FIELD_STATE, new MatchAddressFieldState());
+        states.put(State.MATCH_CONTROL_FIELD_STATE, new MatchControlFieldState());
+        states.put(State.MATCH_PROTOCOL_ONE_OCTET_FIELD_STATE, new MatchProtocolOneOctetFieldState());
+        states.put(State.MATCH_PROTOCOL_TWO_OCTET_FIELD_STATE, new MatchProtocolTwoOctetFieldState());
+        states.put(State.PARSE_VALID_MESSAGE_STATE, new ParseValidMessageState());
+        states.put(State.END_OF_STREAM_STATE, new EndOfStreamState());
+    }
 
-	Protocol protocol;
-	FrameCheckSequence fcs;
-	
-	public ParsingStateMachine(Protocol protocol, FrameCheckSequence fcs) {
-		this.protocol = protocol;
-		this.fcs = fcs;
-		this.initStates();
-	}
-	
-	protected void initStates() {
-		states.put(READ_UNTIL_FIRST_MATCHING_FLAG_STATE, new ReadUntilFirstMatchingFlagState());
-		states.put(READ_UNTIL_END_FLAG_STATE, new ReadUntilEndingFlagState());
-		states.put(UNESCAPE_STATE, new UnescapeState());
-		states.put(VALIDATE_CHECKSUM_STATE, new ValidateChecksumState());
-		states.put(MATCH_ADDRESS_FIELD_STATE, new MatchAddressFieldState());
-		states.put(MATCH_CONTROL_FIELD_STATE, new MatchControlFieldState());
-		states.put(MATCH_PROTOCOL_ONE_OCTET_FIELD_STATE, new MatchProtocolOneOctetFieldState());
-		states.put(MATCH_PROTOCOL_TWO_OCTET_FIELD_STATE, new MatchProtocolTwoOctetFieldState());		
-		states.put(PARSE_VALID_MESSAGE_STATE, new ParseValidMessageState());
-		states.put(END_OF_STREAM_STATE, new EndOfStreamState());
-	}
+    public ParserResult parse(final ByteArrayInputStream inputStream) {
+        
+        if (this.states.isEmpty()) {
+            this.initStates();
+        }
 
-	public ParserResult parse(ByteArrayInputStream inputStream) {
+        inputStream.mark(0);
 
-		inputStream.mark(0);
+        final IParsingContext context = new ParsingContext(
+                    new ParsingContextConfig(new ByteArrayInputStreamReader(), protocol, fcs),
+                    inputStream);
 
-		this.context = new ParsingContext(new ParsingContextConfig(new ByteArrayInputStreamReader(), protocol, fcs), inputStream);
+        this.setState(State.READ_UNTIL_FIRST_MATCHING_FLAG_STATE, context);
 
-		this.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE);
+        return new ParserResult(context.result().getRemaining(), context.result().getMessages());
+    }
 
-		return new ParserResult(this.context.result().getRemaining(), this.context.result().getMessages());
-	}
-
-	@Override
-	public void setState(State state) {
-		try {
-			IParsingState newState = states.get(state);
-			newState.doAction(this, context);
-		} catch (EndOfStreamException e) {
-			this.setState(END_OF_STREAM_STATE);
-		}
-	}
+    @Override
+    public void setState(final State state, final IParsingContext context) {
+        try {
+            final IParsingState newState = states.get(state);
+            newState.doAction(this, context);
+        } catch (final EndOfStreamException e) {
+            this.setState(State.END_OF_STREAM_STATE, context);
+        }
+    }
 
 }

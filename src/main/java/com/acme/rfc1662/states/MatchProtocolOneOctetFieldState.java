@@ -7,14 +7,14 @@ import com.acme.rfc1662.IParsingStateMachine.State;
 
 public class MatchProtocolOneOctetFieldState implements IParsingState {
 
-	@Override
-	public void doAction(IParsingStateMachine machine, IParsingContext context) {
+    @Override
+    public void doAction(final IParsingStateMachine machine, final IParsingContext context) {
 
-		int data = context.packetInformation().getMessageAsStream().read();
+        final int data = context.packetInformation().getMessageAsStream().read();
 
-		context.packetInformation().setProtocol(new byte[] { (byte) data });
-		
-		machine.setState(State.PARSE_VALID_MESSAGE_STATE);
-	}
+        context.packetInformation().setProtocol(new byte[] { (byte) data });
+
+        machine.setState(State.PARSE_VALID_MESSAGE_STATE, context);
+    }
 
 }
