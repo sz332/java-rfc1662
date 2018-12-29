@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.acme.rfc1662.IPPPEncoder;
 import com.acme.rfc1662.enums.FrameCheckSequence;
 import com.acme.rfc1662.enums.Protocol;
@@ -26,14 +28,13 @@ public class PPPEncoder implements IPPPEncoder {
     }
 
     @Override
-    public byte[] encode(final byte[] content) {
+    public byte[] encode(@NonNull final byte[] content) {
 
-        final int crc = fcs.calculator().calculate(
-                calculateFullMessage(FIELD_ADDRESS, FIELD_CONTROL, protocol.identifier(), content, new byte[0]));
+        final int crc = fcs.calculator()
+                .calculate(calculateFullMessage(FIELD_ADDRESS, FIELD_CONTROL, protocol.identifier(), content, new byte[0]));
         final byte[] crcArray = convertCrc(crc, fcs.lengthInBytes());
 
-        final byte[] escaped = escape(
-                calculateFullMessage(FIELD_ADDRESS, FIELD_CONTROL, protocol.identifier(), content, crcArray));
+        final byte[] escaped = escape(calculateFullMessage(FIELD_ADDRESS, FIELD_CONTROL, protocol.identifier(), content, crcArray));
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bos.write(FIELD_FLAG);
@@ -43,8 +44,8 @@ public class PPPEncoder implements IPPPEncoder {
         return bos.toByteArray();
     }
 
-    private byte[] calculateFullMessage(final int fieldAddress, final int fieldControl, final byte[] protocol,
-            final byte[] content, final byte[] crcArray) {
+    private byte[] calculateFullMessage(final int fieldAddress, final int fieldControl, final byte[] protocol, final byte[] content,
+            final byte[] crcArray) {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         bos.write(fieldAddress);
@@ -59,13 +60,13 @@ public class PPPEncoder implements IPPPEncoder {
     private byte[] convertCrc(final int crc, final int lengthInBytes) {
 
         byte[] result;
-        
+
         if (lengthInBytes == 2) {
             result = ByteBuffer.allocate(lengthInBytes).order(ByteOrder.LITTLE_ENDIAN).putShort((short) crc).array();
         } else {
             result = ByteBuffer.allocate(lengthInBytes).order(ByteOrder.LITTLE_ENDIAN).putInt(crc).array();
         }
-        
+
         return result;
     }
 

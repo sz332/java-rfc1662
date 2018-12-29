@@ -3,6 +3,8 @@ package com.acme.rfc1662.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.acme.rfc1662.IParsingContextResult;
 
 public class ParsingContextResult implements IParsingContextResult {
@@ -21,8 +23,8 @@ public class ParsingContextResult implements IParsingContextResult {
     }
 
     @Override
-    public void setRemaining(final byte[] remaining) {
-        this.remaining = remaining == null ? null : remaining.clone();
+    public void setRemaining(@NonNull final byte[] remaining) {
+        this.remaining = remaining.clone();
     }
 
     @Override

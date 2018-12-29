@@ -11,8 +11,7 @@ public class ParsingContextConfig implements IParsingContextConfig {
     private final Protocol protocol;
     private final FrameCheckSequence fcs;
 
-    public ParsingContextConfig(final IByteArrayInputStreamReader reader, final Protocol protocol,
-            final FrameCheckSequence fcs) {
+    public ParsingContextConfig(final IByteArrayInputStreamReader reader, final Protocol protocol, final FrameCheckSequence fcs) {
         this.reader = reader;
         this.protocol = protocol;
         this.fcs = fcs;

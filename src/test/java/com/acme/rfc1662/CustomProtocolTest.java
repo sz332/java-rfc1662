@@ -1,5 +1,6 @@
 package com.acme.rfc1662;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,9 +16,9 @@ public class CustomProtocolTest {
         int lengthInBytes;
         byte[] identifier;
 
-        CustomProtocol(final int lengthInBytes, final byte[] identifier) {
+        CustomProtocol(final int lengthInBytes, @NonNull final byte[] identifier) {
             this.lengthInBytes = lengthInBytes;
-            this.identifier = identifier == null ? null : identifier.clone();
+            this.identifier = identifier.clone();
         }
 
         @Override
@@ -27,7 +28,7 @@ public class CustomProtocolTest {
 
         @Override
         public byte[] identifier() {
-            return identifier == null ? null : identifier.clone();
+            return identifier.clone();
         }
 
     }
