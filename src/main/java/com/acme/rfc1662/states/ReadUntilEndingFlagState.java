@@ -1,7 +1,5 @@
 package com.acme.rfc1662.states;
 
-import static com.acme.rfc1662.IParsingStateMachine.State.UNESCAPE_STATE;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -32,7 +30,7 @@ public class ReadUntilEndingFlagState implements IParsingState {
 
         context.packetInformation().setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
 
-        machine.setState(UNESCAPE_STATE, context);
+        machine.setState(UnescapeState.class, context);
     }
 
 }

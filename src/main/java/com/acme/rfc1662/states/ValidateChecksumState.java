@@ -1,8 +1,5 @@
 package com.acme.rfc1662.states;
 
-import static com.acme.rfc1662.IParsingStateMachine.State.MATCH_ADDRESS_FIELD_STATE;
-import static com.acme.rfc1662.IParsingStateMachine.State.READ_UNTIL_FIRST_MATCHING_FLAG_STATE;
-
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
@@ -29,7 +26,7 @@ public class ValidateChecksumState implements IParsingState {
         final int minimalLength = ADDRESS_LENGTH + CONTROL_LENGTH + protocolLength + fcsLength;
 
         if (is.available() < minimalLength) {
-            machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE, context);
+            machine.setState(ReadUntilFirstMatchingFlagState.class, context);
             return;
         }
 
@@ -45,12 +42,12 @@ public class ValidateChecksumState implements IParsingState {
         final int calculatedChecksum = config.getFcs().calculator().calculate(messageWithoutFcs);
 
         if (expectedChecksum == calculatedChecksum) {
-            final byte[] information = Arrays.copyOfRange(messageWithoutFcs,
-                    ADDRESS_LENGTH + CONTROL_LENGTH + protocolLength, messageWithoutFcs.length);
+            final byte[] information = Arrays.copyOfRange(messageWithoutFcs, ADDRESS_LENGTH + CONTROL_LENGTH + protocolLength,
+                    messageWithoutFcs.length);
             context.packetInformation().setInformation(information);
-            machine.setState(MATCH_ADDRESS_FIELD_STATE, context);
+            machine.setState(MatchAddressFieldState.class, context);
         } else {
-            machine.setState(READ_UNTIL_FIRST_MATCHING_FLAG_STATE, context);
+            machine.setState(ReadUntilFirstMatchingFlagState.class, context);
         }
 
     }

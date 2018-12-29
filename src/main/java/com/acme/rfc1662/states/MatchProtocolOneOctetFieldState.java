@@ -3,7 +3,6 @@ package com.acme.rfc1662.states;
 import com.acme.rfc1662.IParsingContext;
 import com.acme.rfc1662.IParsingState;
 import com.acme.rfc1662.IParsingStateMachine;
-import com.acme.rfc1662.IParsingStateMachine.State;
 
 public class MatchProtocolOneOctetFieldState implements IParsingState {
 
@@ -14,7 +13,7 @@ public class MatchProtocolOneOctetFieldState implements IParsingState {
 
         context.packetInformation().setProtocol(new byte[] { (byte) data });
 
-        machine.setState(State.PARSE_VALID_MESSAGE_STATE, context);
+        machine.setState(ParseValidMessageState.class, context);
     }
 
 }

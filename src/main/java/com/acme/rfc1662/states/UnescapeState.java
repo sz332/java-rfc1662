@@ -1,7 +1,5 @@
 package com.acme.rfc1662.states;
 
-import static com.acme.rfc1662.IParsingStateMachine.State.VALIDATE_CHECKSUM_STATE;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -40,6 +38,6 @@ public class UnescapeState implements IParsingState {
 
         // packet information contains now the unescaped message
 
-        machine.setState(VALIDATE_CHECKSUM_STATE, context);
+        machine.setState(ValidateChecksumState.class, context);
     }
 }
