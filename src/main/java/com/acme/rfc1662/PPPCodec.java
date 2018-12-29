@@ -9,16 +9,17 @@ import com.acme.rfc1662.impl.StateMachine;
 
 public class PPPCodec {
 
-    Protocol protocol;
-    FrameCheckSequence fcs;
+    private final Protocol protocol;
+    private final FrameCheckSequence fcs;
+    private final StateMachine sm;
 
     public PPPCodec(final Protocol protocol, final FrameCheckSequence fcs) {
         this.protocol = protocol;
         this.fcs = fcs;
+        this.sm = new StateMachine(protocol, fcs);
     }
 
     public ParsingResult decode(final ByteArrayInputStream is) {
-        final StateMachine sm = new StateMachine(protocol, fcs);
         return sm.parse(is);
     }
 

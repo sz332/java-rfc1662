@@ -31,20 +31,20 @@ public final class StateMachine implements IStateMachine {
     public ParsingResult parse(final ByteArrayInputStream inputStream) {
         inputStream.mark(0);
 
-        final IInputContext context = new InputContext(new ContextConfig(new ByteArrayInputStreamReader(), protocol, fcs),
+        final IInputContext inputContext = new InputContext(new ContextConfig(new ByteArrayInputStreamReader(), protocol, fcs),
                 inputStream);
 
         final IOutputContext outputContext = new OutputContext();
 
         final ITemporaryContext tempContext = new TemporaryContext();
 
-        this.setState(ReadUntilFirstMatchingFlagState.class, context, outputContext, tempContext);
+        this.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
 
         return new ParsingResult(outputContext.getRemaining(), outputContext.getMessages());
     }
 
     @Override
-    public void setState(Class<? extends IState> stateClass, final IInputContext context, final IOutputContext outputContext,
+    public void setState(Class<? extends IState> stateClass, final IInputContext inputContext, final IOutputContext outputContext,
             final ITemporaryContext tempContext) {
         try {
 
@@ -55,9 +55,9 @@ public final class StateMachine implements IStateMachine {
                 states.put(stateClass, newState);
             }
 
-            newState.doAction(this, context, outputContext, tempContext);
+            newState.doAction(this, inputContext, outputContext, tempContext);
         } catch (final EndOfStreamException | InstantiationException | IllegalAccessException e) {
-            this.setState(EndOfStreamState.class, context, outputContext, tempContext);
+            this.setState(EndOfStreamState.class, inputContext, outputContext, tempContext);
         }
     }
 
