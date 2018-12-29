@@ -16,13 +16,13 @@ public class MatchControlFieldState implements IState {
 
         if (data == FIELD_CONTROL) {
             if (inputContext.config().getProtocol().lengthInBytes() == 1) {
-                machine.setState(MatchProtocolOneOctetFieldState.class, inputContext, outputContext, tempContext);
+                machine.setState(MatchProtocolOneOctetFieldState.class);
             } else {
-                machine.setState(MatchProtocolTwoOctetFieldState.class, inputContext, outputContext, tempContext);
+                machine.setState(MatchProtocolTwoOctetFieldState.class);
             }
 
         } else {
-            machine.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
+            machine.setState(ReadUntilFirstMatchingFlagState.class);
         }
     }
 

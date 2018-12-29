@@ -30,7 +30,7 @@ public class ValidateChecksumState implements IState {
         final int minimalLength = ADDRESS_LENGTH + CONTROL_LENGTH + protocolLength + fcsLength;
 
         if (is.available() < minimalLength) {
-            machine.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
+            machine.setState(ReadUntilFirstMatchingFlagState.class);
             return;
         }
 
@@ -49,9 +49,9 @@ public class ValidateChecksumState implements IState {
             final byte[] information = Arrays.copyOfRange(messageWithoutFcs, ADDRESS_LENGTH + CONTROL_LENGTH + protocolLength,
                     messageWithoutFcs.length);
             tempContext.setInformation(information);
-            machine.setState(MatchAddressFieldState.class, inputContext, outputContext, tempContext);
+            machine.setState(MatchAddressFieldState.class);
         } else {
-            machine.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
+            machine.setState(ReadUntilFirstMatchingFlagState.class);
         }
 
     }

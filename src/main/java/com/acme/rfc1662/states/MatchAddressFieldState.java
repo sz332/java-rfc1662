@@ -16,9 +16,9 @@ public class MatchAddressFieldState implements IState {
         final int data = tempContext.getMessageAsStream().read();
 
         if (data == FIELD_ADDRESS) {
-            machine.setState(MatchControlFieldState.class, inputContext, outputContext, tempContext);
+            machine.setState(MatchControlFieldState.class);
         } else {
-            machine.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
+            machine.setState(ReadUntilFirstMatchingFlagState.class);
         }
 
     }

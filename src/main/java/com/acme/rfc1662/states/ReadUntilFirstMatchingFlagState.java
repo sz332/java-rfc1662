@@ -20,7 +20,7 @@ public class ReadUntilFirstMatchingFlagState implements IState {
             result = inputContext.config().getReader().read(inputContext.inputStream());
         } while (result != FIELD_FLAG);
 
-        machine.setState(ReadUntilEndingFlagState.class, inputContext, outputContext, tempContext);
+        machine.setState(ReadUntilEndingFlagState.class);
     }
 
 }

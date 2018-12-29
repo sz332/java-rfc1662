@@ -32,7 +32,7 @@ public class ReadUntilEndingFlagState implements IState {
 
         tempContext.setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
 
-        machine.setState(UnescapeState.class, inputContext, outputContext, tempContext);
+        machine.setState(UnescapeState.class);
     }
 
 }

@@ -11,7 +11,7 @@ public class ParseValidMessageState implements IState {
     @Override
     public void doAction(IStateMachine machine, IInputContext inputContext, IOutputContext outputContext, ITemporaryContext tempContext) {
         outputContext.addMessage(tempContext.getInformation());
-        machine.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
+        machine.setState(ReadUntilFirstMatchingFlagState.class);
     }
 
 }

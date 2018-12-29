@@ -22,6 +22,10 @@ public final class StateMachine implements IStateMachine {
     final Protocol protocol;
     final FrameCheckSequence fcs;
 
+    private IInputContext inputContext;
+    private IOutputContext outputContext;
+    private ITemporaryContext tempContext;
+
     public StateMachine(final Protocol protocol, final FrameCheckSequence fcs) {
         this.protocol = protocol;
         this.fcs = fcs;
@@ -31,21 +35,17 @@ public final class StateMachine implements IStateMachine {
     public ParsingResult parse(final ByteArrayInputStream inputStream) {
         inputStream.mark(0);
 
-        final IInputContext inputContext = new InputContext(new ContextConfig(new ByteArrayInputStreamReader(), protocol, fcs),
-                inputStream);
+        inputContext = new InputContext(new ContextConfig(new ByteArrayInputStreamReader(), protocol, fcs), inputStream);
+        outputContext = new OutputContext();
+        tempContext = new TemporaryContext();
 
-        final IOutputContext outputContext = new OutputContext();
-
-        final ITemporaryContext tempContext = new TemporaryContext();
-
-        this.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
+        this.setState(ReadUntilFirstMatchingFlagState.class);
 
         return new ParsingResult(outputContext.getRemaining(), outputContext.getMessages());
     }
 
     @Override
-    public void setState(Class<? extends IState> stateClass, final IInputContext inputContext, final IOutputContext outputContext,
-            final ITemporaryContext tempContext) {
+    public void setState(Class<? extends IState> stateClass) {
         try {
 
             IState newState = states.get(stateClass);
@@ -57,7 +57,7 @@ public final class StateMachine implements IStateMachine {
 
             newState.doAction(this, inputContext, outputContext, tempContext);
         } catch (final EndOfStreamException | InstantiationException | IllegalAccessException e) {
-            this.setState(EndOfStreamState.class, inputContext, outputContext, tempContext);
+            this.setState(EndOfStreamState.class);
         }
     }
 

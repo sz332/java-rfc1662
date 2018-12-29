@@ -40,6 +40,6 @@ public class UnescapeState implements IState {
 
         // packet information contains now the unescaped message
 
-        machine.setState(ValidateChecksumState.class, inputContext, outputContext, tempContext);
+        machine.setState(ValidateChecksumState.class);
     }
 }

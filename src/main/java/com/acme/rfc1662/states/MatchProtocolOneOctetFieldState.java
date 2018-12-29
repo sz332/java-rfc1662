@@ -15,7 +15,7 @@ public class MatchProtocolOneOctetFieldState implements IState {
 
         tempContext.setProtocol(new byte[] { (byte) data });
 
-        machine.setState(ParseValidMessageState.class, inputContext, outputContext, tempContext);
+        machine.setState(ParseValidMessageState.class);
     }
 
 }

@@ -16,7 +16,7 @@ public class MatchProtocolTwoOctetFieldState implements IState {
 
         tempContext.setProtocol(new byte[] { (byte) first, (byte) second });
 
-        machine.setState(ParseValidMessageState.class, inputContext, outputContext, tempContext);
+        machine.setState(ParseValidMessageState.class);
     }
 
 }
