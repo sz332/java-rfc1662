@@ -21,7 +21,7 @@ public class RandomBreakingMessagesDecodeTest {
     public void testEncodeDecode() {
         final byte[] message = codec.encode(new byte[] { (byte) 0x9a, (byte) 0x46 });
 
-        final ParserResult result = codec.decode(new ByteArrayInputStream(message));
+        final ParsingResult result = codec.decode(new ByteArrayInputStream(message));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.messages().size());
@@ -31,7 +31,7 @@ public class RandomBreakingMessagesDecodeTest {
     public void testEncodeDecode2() {
         final byte[] message = codec.encode(new byte[] { (byte) 0x7E });
 
-        final ParserResult result = codec.decode(new ByteArrayInputStream(message));
+        final ParsingResult result = codec.decode(new ByteArrayInputStream(message));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.messages().size());

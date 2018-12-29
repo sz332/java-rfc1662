@@ -13,7 +13,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testPartialHeaderArrived() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -22,7 +22,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testPartialAddressArrived() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -31,7 +31,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testPartialControlArrived() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23 }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -40,7 +40,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testPartialProtocolPartialArrived() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0 }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -49,7 +49,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testPartialProtocolArrived() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21 }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -58,7 +58,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testPartialContentArrived() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01 }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -67,7 +67,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testMoreContentArrived() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02 }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -76,7 +76,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testPartialCRCArrived() {
-        final ParserResult result = codec
+        final ParsingResult result = codec
                 .decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02, 0x9d }));
 
         Assert.assertNotNull(result);
@@ -86,7 +86,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testCRCArrived() {
-        final ParserResult result = codec
+        final ParsingResult result = codec
                 .decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02, 0x9d, 0x4f }));
 
         Assert.assertNotNull(result);
@@ -96,7 +96,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testCRCArrivedButWrong() {
-        final ParserResult result = codec
+        final ParsingResult result = codec
                 .decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02, 0x0d, 0x4f, 0x7E }));
 
         Assert.assertNotNull(result);
@@ -106,7 +106,7 @@ public class PartialDecodeTest {
 
     @Test
     public void testFullMessageArrived() {
-        final ParserResult result = codec
+        final ParsingResult result = codec
                 .decode(intArray.join(new int[] { 0x7E, 0xFF, 0x7D, 0x23, 0xC0, 0x21, 0x01, 0x02, 0x9d, 0x4f, 0x7E }));
 
         Assert.assertNotNull(result);

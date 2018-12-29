@@ -3,19 +3,21 @@ package com.acme.rfc1662.states;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import com.acme.rfc1662.IParsingContext;
-import com.acme.rfc1662.IParsingState;
-import com.acme.rfc1662.IParsingStateMachine;
+import com.acme.rfc1662.IInputContext;
+import com.acme.rfc1662.IOutputContext;
+import com.acme.rfc1662.IState;
+import com.acme.rfc1662.IStateMachine;
+import com.acme.rfc1662.ITemporaryContext;
 
-public class UnescapeState implements IParsingState {
+public class UnescapeState implements IState {
 
     private static final int END_OF_STREAM = -1;
     private static final int CONTROL_ESCAPE = 0x7d;
 
     @Override
-    public void doAction(final IParsingStateMachine machine, final IParsingContext context) {
+    public void doAction(IStateMachine machine, IInputContext inputContext, IOutputContext outputContext, ITemporaryContext tempContext) {
 
-        final ByteArrayInputStream is = context.packetInformation().getMessageAsStream();
+        final ByteArrayInputStream is = tempContext.getMessageAsStream();
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         while (is.available() > 0) {
@@ -34,10 +36,10 @@ public class UnescapeState implements IParsingState {
             }
         }
 
-        context.packetInformation().setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
+        tempContext.setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
 
         // packet information contains now the unescaped message
 
-        machine.setState(ValidateChecksumState.class, context);
+        machine.setState(ValidateChecksumState.class, inputContext, outputContext, tempContext);
     }
 }

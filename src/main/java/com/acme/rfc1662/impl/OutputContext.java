@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import com.acme.rfc1662.IParsingContextResult;
+import com.acme.rfc1662.IOutputContext;
 
-public class ParsingContextResult implements IParsingContextResult {
+public class OutputContext implements IOutputContext {
 
     private final List<byte[]> messages = new ArrayList<>();
     private byte[] remaining = new byte[0];

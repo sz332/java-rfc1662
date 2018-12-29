@@ -5,7 +5,7 @@ import java.io.ByteArrayInputStream;
 import com.acme.rfc1662.enums.FrameCheckSequence;
 import com.acme.rfc1662.enums.Protocol;
 import com.acme.rfc1662.impl.PPPEncoder;
-import com.acme.rfc1662.impl.ParsingStateMachine;
+import com.acme.rfc1662.impl.StateMachine;
 
 public class PPPCodec {
 
@@ -17,8 +17,8 @@ public class PPPCodec {
         this.fcs = fcs;
     }
 
-    public ParserResult decode(final ByteArrayInputStream is) {
-        final ParsingStateMachine sm = new ParsingStateMachine(protocol, fcs);
+    public ParsingResult decode(final ByteArrayInputStream is) {
+        final StateMachine sm = new StateMachine(protocol, fcs);
         return sm.parse(is);
     }
 

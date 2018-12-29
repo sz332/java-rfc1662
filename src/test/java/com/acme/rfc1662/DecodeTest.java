@@ -21,7 +21,7 @@ public class DecodeTest {
 
     @Test
     public void testEmptyStream() {
-        final ParserResult result = codec.decode(intArray.join(new int[0]));
+        final ParsingResult result = codec.decode(intArray.join(new int[0]));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -30,7 +30,7 @@ public class DecodeTest {
 
     @Test
     public void testStandardMessage() {
-        final ParserResult result = codec.decode(intArray.join(MESSAGE_1));
+        final ParsingResult result = codec.decode(intArray.join(MESSAGE_1));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.messages().size());
@@ -40,7 +40,7 @@ public class DecodeTest {
     @Test
     public void testTwoCorrectMessages() {
 
-        final ParserResult result = codec.decode(intArray.join(MESSAGE_1, MESSAGE_1));
+        final ParsingResult result = codec.decode(intArray.join(MESSAGE_1, MESSAGE_1));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(2, result.messages().size());
@@ -49,7 +49,7 @@ public class DecodeTest {
 
     @Test
     public void testTrashBeforeMessage() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.messages().size());
@@ -59,7 +59,7 @@ public class DecodeTest {
     // FIXME
     @Test
     public void testTrashAfterMessage() {
-        final ParserResult result = codec.decode(intArray.join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));
+        final ParsingResult result = codec.decode(intArray.join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.messages().size());
@@ -68,7 +68,7 @@ public class DecodeTest {
 
     @Test
     public void testTrashBeforeAfterMessage() {
-        final ParserResult result = codec
+        final ParsingResult result = codec
                 .decode(intArray.join(new int[] { 0x04, 0x05, 0x06 }, MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }));
 
         Assert.assertNotNull(result);
@@ -78,7 +78,7 @@ public class DecodeTest {
 
     @Test
     public void testTrashBetweenMessages() {
-        final ParserResult result = codec.decode(intArray.join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
+        final ParsingResult result = codec.decode(intArray.join(MESSAGE_1, new int[] { 0x10, 0x11, 0x12 }, MESSAGE_1));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(2, result.messages().size());
@@ -87,7 +87,7 @@ public class DecodeTest {
 
     @Test
     public void testWrongAddress() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0x12, 0x03 }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0x12, 0x03 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -96,7 +96,7 @@ public class DecodeTest {
 
     @Test
     public void testWrongControl() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x04 }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x04 }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -105,7 +105,7 @@ public class DecodeTest {
 
     @Test
     public void testNoContentNoCRCButClosing() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x13, 0x7E }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x13, 0x7E }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());
@@ -114,7 +114,7 @@ public class DecodeTest {
 
     @Test
     public void testNoContentNoCRCAndClosing() {
-        final ParserResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x00, 0x00, 0x7E }));
+        final ParsingResult result = codec.decode(intArray.join(new int[] { 0x7E, 0xFF, 0x03, 0x15, 0x00, 0x00, 0x7E }));
 
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.messages().size());

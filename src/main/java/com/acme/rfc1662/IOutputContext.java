@@ -2,7 +2,7 @@ package com.acme.rfc1662;
 
 import java.util.List;
 
-public interface IParsingContextResult {
+public interface IOutputContext {
 
     void addMessage(byte[] data);
 

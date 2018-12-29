@@ -59,7 +59,7 @@ public class RandomDecodingTest {
 
                 LOGGER.info("stream = {}", printer.printAsHex(dataToDecode, 1));
 
-                final ParserResult result = codec.decode(new ByteArrayInputStream(dataToDecode));
+                final ParsingResult result = codec.decode(new ByteArrayInputStream(dataToDecode));
 
                 Assert.assertEquals(correctMessageCount, result.messages().size());
 

@@ -1,20 +1,22 @@
 package com.acme.rfc1662.states;
 
-import com.acme.rfc1662.IParsingContext;
-import com.acme.rfc1662.IParsingState;
-import com.acme.rfc1662.IParsingStateMachine;
+import com.acme.rfc1662.IOutputContext;
+import com.acme.rfc1662.IInputContext;
+import com.acme.rfc1662.IState;
+import com.acme.rfc1662.IStateMachine;
+import com.acme.rfc1662.ITemporaryContext;
 
-public class MatchProtocolTwoOctetFieldState implements IParsingState {
+public class MatchProtocolTwoOctetFieldState implements IState {
 
     @Override
-    public void doAction(final IParsingStateMachine machine, final IParsingContext context) {
+    public void doAction(IStateMachine machine, IInputContext inputContext, IOutputContext outputContext, ITemporaryContext tempContext) {
 
-        final int first = context.packetInformation().getMessageAsStream().read();
-        final int second = context.packetInformation().getMessageAsStream().read();
+        final int first = tempContext.getMessageAsStream().read();
+        final int second = tempContext.getMessageAsStream().read();
 
-        context.packetInformation().setProtocol(new byte[] { (byte) first, (byte) second });
+        tempContext.setProtocol(new byte[] { (byte) first, (byte) second });
 
-        machine.setState(ParseValidMessageState.class, context);
+        machine.setState(ParseValidMessageState.class, inputContext, outputContext, tempContext);
     }
 
 }

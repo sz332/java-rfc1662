@@ -3,22 +3,24 @@ package com.acme.rfc1662.states;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import com.acme.rfc1662.IParsingContext;
-import com.acme.rfc1662.IParsingState;
-import com.acme.rfc1662.IParsingStateMachine;
+import com.acme.rfc1662.IInputContext;
+import com.acme.rfc1662.IOutputContext;
+import com.acme.rfc1662.IState;
+import com.acme.rfc1662.IStateMachine;
+import com.acme.rfc1662.ITemporaryContext;
 
-public class ReadUntilEndingFlagState implements IParsingState {
+public class ReadUntilEndingFlagState implements IState {
 
     private static final int FIELD_FLAG = 0x7E;
 
     @Override
-    public void doAction(final IParsingStateMachine machine, final IParsingContext context) {
+    public void doAction(IStateMachine machine, IInputContext inputContext, IOutputContext outputContext, ITemporaryContext tempContext) {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         int data;
 
         do {
-            data = context.config().getReader().read(context.inputStream());
+            data = inputContext.config().getReader().read(inputContext.inputStream());
 
             if (data != FIELD_FLAG) {
                 bos.write(data);
@@ -26,11 +28,11 @@ public class ReadUntilEndingFlagState implements IParsingState {
 
         } while (data != FIELD_FLAG);
 
-        context.inputStream().mark(0);
+        inputContext.inputStream().mark(0);
 
-        context.packetInformation().setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
+        tempContext.setMessageAsStream(new ByteArrayInputStream(bos.toByteArray()));
 
-        machine.setState(UnescapeState.class, context);
+        machine.setState(UnescapeState.class, inputContext, outputContext, tempContext);
     }
 
 }

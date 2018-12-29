@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import com.acme.rfc1662.IPacketInformation;
+import com.acme.rfc1662.ITemporaryContext;
 
-public class PacketInformation implements IPacketInformation {
+public class TemporaryContext implements ITemporaryContext {
 
     byte @NonNull [] protocol;
     byte @NonNull [] information;
@@ -14,7 +14,7 @@ public class PacketInformation implements IPacketInformation {
     @NonNull
     ByteArrayInputStream message;
 
-    public PacketInformation() {
+    public TemporaryContext() {
         this.protocol = new byte[0];
         this.information = new byte[0];
         this.message = new ByteArrayInputStream(new byte[0]);

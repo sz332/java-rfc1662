@@ -3,22 +3,26 @@ package com.acme.rfc1662.states;
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
-import com.acme.rfc1662.IParsingContext;
-import com.acme.rfc1662.IParsingContextConfig;
-import com.acme.rfc1662.IParsingState;
-import com.acme.rfc1662.IParsingStateMachine;
+import com.acme.rfc1662.IInputContext;
+import com.acme.rfc1662.IOutputContext;
+import com.acme.rfc1662.IContextConfig;
+import com.acme.rfc1662.IState;
+import com.acme.rfc1662.IStateMachine;
+import com.acme.rfc1662.ITemporaryContext;
 
-public class ValidateChecksumState implements IParsingState {
+public class ValidateChecksumState implements IState {
 
     private static final int ADDRESS_LENGTH = 1;
     private static final int CONTROL_LENGTH = 1;
 
+    // FIXME refactor method because it contains too much code
     @Override
-    public void doAction(final IParsingStateMachine machine, final IParsingContext context) {
+    public void doAction(IStateMachine machine, IInputContext inputContext, IOutputContext outputContext,
+            ITemporaryContext tempContext) {
 
-        final IParsingContextConfig config = context.config();
+        final IContextConfig config = inputContext.config();
 
-        final ByteArrayInputStream is = context.packetInformation().getMessageAsStream();
+        final ByteArrayInputStream is = tempContext.getMessageAsStream();
         is.mark(0);
 
         final int fcsLength = config.getFcs().lengthInBytes();
@@ -26,7 +30,7 @@ public class ValidateChecksumState implements IParsingState {
         final int minimalLength = ADDRESS_LENGTH + CONTROL_LENGTH + protocolLength + fcsLength;
 
         if (is.available() < minimalLength) {
-            machine.setState(ReadUntilFirstMatchingFlagState.class, context);
+            machine.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
             return;
         }
 
@@ -44,10 +48,10 @@ public class ValidateChecksumState implements IParsingState {
         if (expectedChecksum == calculatedChecksum) {
             final byte[] information = Arrays.copyOfRange(messageWithoutFcs, ADDRESS_LENGTH + CONTROL_LENGTH + protocolLength,
                     messageWithoutFcs.length);
-            context.packetInformation().setInformation(information);
-            machine.setState(MatchAddressFieldState.class, context);
+            tempContext.setInformation(information);
+            machine.setState(MatchAddressFieldState.class, inputContext, outputContext, tempContext);
         } else {
-            machine.setState(ReadUntilFirstMatchingFlagState.class, context);
+            machine.setState(ReadUntilFirstMatchingFlagState.class, inputContext, outputContext, tempContext);
         }
 
     }

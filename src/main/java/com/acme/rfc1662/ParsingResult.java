@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class ParserResult {
+public class ParsingResult {
 
     private final byte[] remaining;
     private final List<byte[]> messages;
 
-    public ParserResult(@NonNull final byte[] remaining, @NonNull final List<byte[]> messages) {
+    public ParsingResult(@NonNull final byte[] remaining, @NonNull final List<byte[]> messages) {
         this.remaining = remaining.clone();
         this.messages = messages;
     }
@@ -21,5 +21,4 @@ public class ParserResult {
     public byte[] remaining() {
         return remaining.clone();
     }
-
 }
